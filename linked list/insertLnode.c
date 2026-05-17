@@ -26,7 +26,19 @@ struct lnode *insertAtLbegin(struct lnode *head, int data)
 
 struct lnode *insertAtLpos(struct lnode *head, int pos, int data)
 {
-	struct lnode *new_node = createLnode(data);
+	if (head == NULL) return NULL;
+	if (pos == 1) return insertAtLbegin(head, data);
 
-	return new_node;
+	struct lnode *temp = head;
+	int i = 2;
+	while (head != NULL && i < pos) {
+		head = head->next;
+		i++;
+	}
+	temp = head->next;
+	head->next = createLnode(data);
+	head->next->next = temp;
+
+
+	return head;
 }

@@ -10,7 +10,8 @@ int main(int argc, char *argv[])
 	head = insertAtLbegin(head, 1);
 	insertAtLend(head, 8);
 	printList(head);
-	insertAtLpos(head, 2, 3);
+	insertAtLpos(head, 3, 4);
+	printList(head);
 	printLaddr(head);
 	freeList(&head);
 	if (head == NULL) printf("list freed!\n");
