@@ -39,6 +39,5 @@ struct lnode *insertAtLpos(struct lnode *head, int pos, int data)
 	head->next = createLnode(data);
 	head->next->next = temp;
 
-
 	return head;
 }
