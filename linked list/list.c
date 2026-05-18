@@ -4,28 +4,28 @@
 
 int main(int argc, char *argv[])
 {
-	struct lnode *head = createLnode(3);
+	int h = 2;
+	struct lnode *head = createLnode((void*)&h);
 
-	insertAtLend(&head, 7);
-	insertAtLend(&head, 8);
-	insertAtLbegin(&head, 1);
-	insertAtLend(&head, 9);
+	int n = 7;
+	insertAtLend(&head, (void*)&n);
 
-	printList(head);
+	int m = 5;
+	insertAtLbegin(&head, (void*)&m);
 
-	insertAtLpos(&head, 1, 4);
+	printList(head, 'd');
 
-	printList(head);
+	int listsize = getLsize(head);
+	int valuetofind = 2;
+	int foundindex = searchLnode(head, valuetofind);
 
-	deleteAtLbegin(&head);
-	deleteAtLend(&head);
-
-	printList(head);
-
-	deleteAtLpos(&head, 2);
-
-	printList(head);
-	printLaddr(head);
+	printf("searching for value %d on list of size %d\n", valuetofind, listsize);
+	if (foundindex != -1) {
+		struct lnode *foundnode = getLnode(head, foundindex);
+		printf("%p: %d\n", foundnode, *((int*)foundnode->data));
+	} else {
+		printf("value not found\n");
+	}
 
 	freeList(&head);
 	if (head == NULL) printf("list freed!\n");

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "list.h"
 
-struct lnode *insertAtLend(struct lnode **head, int data)
+struct lnode *insertAtLend(struct lnode **head, void *data)
 {
 	if (head == NULL) return NULL;
 
@@ -16,7 +16,7 @@ struct lnode *insertAtLend(struct lnode **head, int data)
 	return p->next;
 }
 
-struct lnode *insertAtLbegin(struct lnode **head, int data)
+struct lnode *insertAtLbegin(struct lnode **head, void *data)
 {
 	if (head == NULL) return NULL;
 	
@@ -26,7 +26,7 @@ struct lnode *insertAtLbegin(struct lnode **head, int data)
 	return new_node;
 }
 
-struct lnode *insertAtLpos(struct lnode **head, int pos, int data)
+struct lnode *insertAtLpos(struct lnode **head, int pos, void *data)
 {
 	if (head == NULL) return NULL;
 	
