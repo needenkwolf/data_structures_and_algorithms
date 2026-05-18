@@ -1,43 +1,51 @@
 #include <stdio.h>
 #include "list.h"
 
-struct lnode *insertAtLend(struct lnode *head, int data)
+struct lnode *insertAtLend(struct lnode **head, int data)
 {
 	if (head == NULL) return NULL;
 
-	while (head->next != NULL) {
-		head = head->next;
+	struct lnode *p = (*head);
+
+	while (p->next != NULL) {
+		p = p->next;
 	}
 
-	head->next = createLnode(data);
-	return head->next;
+	p->next = createLnode(data);
+	
+	return p->next;
 }
 
-struct lnode *insertAtLbegin(struct lnode *head, int data)
+struct lnode *insertAtLbegin(struct lnode **head, int data)
 {
 	if (head == NULL) return NULL;
 	
 	struct lnode *new_node = createLnode(data);
-
-	new_node->next = head;
-
+	new_node->next = (*head);
+	*head = new_node;
 	return new_node;
 }
 
-struct lnode *insertAtLpos(struct lnode *head, int pos, int data)
+struct lnode *insertAtLpos(struct lnode **head, int pos, int data)
 {
 	if (head == NULL) return NULL;
+	
+	if (pos <= 0) return NULL;
 	if (pos == 1) return insertAtLbegin(head, data);
 
-	struct lnode *temp = head;
+	struct lnode *temp = (*head);
+	struct lnode *p = (*head);
+
 	int i = 2;
-	while (head != NULL && i < pos) {
-		head = head->next;
+	while (p != NULL && i < pos) {
+		p = p->next;
 		i++;
 	}
-	temp = head->next;
-	head->next = createLnode(data);
-	head->next->next = temp;
+	if (p == NULL) return NULL;
 
-	return head;
+	temp = p->next;
+	p->next = createLnode(data);
+	p->next->next = temp;
+
+	return p;
 }

@@ -6,23 +6,23 @@ int main(int argc, char *argv[])
 {
 	struct lnode *head = createLnode(3);
 
-	insertAtLend(head, 7);
-	insertAtLend(head, 8);
-	head = insertAtLbegin(head, 1);
-	insertAtLend(head, 9);
+	insertAtLend(&head, 7);
+	insertAtLend(&head, 8);
+	insertAtLbegin(&head, 1);
+	insertAtLend(&head, 9);
 
 	printList(head);
 
-	insertAtLpos(head, 3, 4);
+	insertAtLpos(&head, 1, 4);
 
 	printList(head);
 
-	head = deleteAtLbegin(head);
-	deleteAtLend(head);
+	deleteAtLbegin(&head);
+	deleteAtLend(&head);
 
 	printList(head);
 
-	deleteAtLpos(head, 2);
+	deleteAtLpos(&head, 2);
 
 	printList(head);
 	printLaddr(head);

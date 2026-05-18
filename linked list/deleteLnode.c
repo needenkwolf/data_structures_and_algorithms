@@ -2,47 +2,53 @@
 #include <stdlib.h>
 #include "list.h"
 
-void deleteAtLend(struct lnode *head)
+void deleteAtLend(struct lnode **head)
 {
 	if (head == NULL) return;
 
-	while (head->next->next != NULL) {
-		head = head->next;
+	struct lnode *p = (*head);
+	while (p->next->next != NULL) {
+		p = p->next;
 	}
-	free(head->next);
-	head->next = NULL;
+	free(p->next);
+	p->next = NULL;
 }
 
-struct lnode *deleteAtLbegin(struct lnode *head)
+struct lnode *deleteAtLbegin(struct lnode **head)
 {
 	if (head == NULL) return NULL;
 
-	struct lnode *next = head->next;
-	free(head);
+	struct lnode *next = (*head)->next;
+	free((*head));
+	*head = next;
 	return next;
 }
 
-struct lnode *deleteAtLpos(struct lnode *head, int pos)
+struct lnode *deleteAtLpos(struct lnode **head, int pos)
 {
 	if (head == NULL) return NULL;
+
+	if (pos <= 0) return NULL;
 	if (pos == 1) return deleteAtLbegin(head);
 
-	struct lnode *temp = head;
+	struct lnode *temp = (*head);
+	struct lnode *p = (*head);
 
 	int i = 2;
-	while (head->next->next != NULL && i < pos - 1) {
-		head = head->next;
+	while (p->next->next != NULL && i < pos - 1) {
+		p = p->next;
 		i++;
 	}
+	if (p->next == NULL || p->next->next == NULL) return NULL;
 	
-	temp = head->next->next;
+	temp = p->next->next;
 
-	free(head->next);
-	head->next = NULL;
+	free(p->next);
+	p->next = NULL;
 	
 	if (temp != NULL) {
-		head->next = temp;
+		p->next = temp;
 	}
 	
-	return head;
+	return p;
 }
