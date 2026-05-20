@@ -15,6 +15,17 @@ int main(int argc, char *argv[])
 
 	printList(head, 'd');
 
+	int o = 6;
+	insertAtLpos(&head, 3, (void*)&o);
+
+	printList(head, 'd');
+
+	deleteAtLpos(&head, 4);
+	deleteAtLbegin(&head);
+	deleteAtLend(&head);
+
+	printList(head, 'd');
+
 	int listsize = getLsize(head);
 	int valuetofind = 2;
 	int foundindex = searchLnode(head, valuetofind);
