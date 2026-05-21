@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "../list.h"
 
-#define MAX_COEFF 20
+#define MAX_COEFF 200
 
 struct plyn {
 	int coeff;
@@ -24,23 +24,14 @@ void printExpr(struct lnode *expr);
 
 int main(int argc, char *argv[]) 
 {
-	struct lnode *expr1 = createPlynExpr(36, 7);
+	struct lnode *expr1 = createPlynExpr(3, 3);
 	
-	insertPlynTerm(&expr1, 18, 6);
-	/*
-	insertPlynTerm(&expr1, 8, 3);
-	insertPlynTerm(&expr1, 16, 1);
-	insertPlynTerm(&expr1, 9, 0);
-	*/
+	insertPlynTerm(&expr1, -12, 2);
+	insertPlynTerm(&expr1, 12, 1);
 	printf("first expr:\t");
 	printExpr(expr1);
 
-	struct lnode *expr2 = createPlynExpr(6, 5);
-	insertPlynTerm(&expr2, 3, 4);
-	insertPlynTerm(&expr2, 9, 3);
-	insertPlynTerm(&expr2, 9, 2);
-	insertPlynTerm(&expr2, 7, 1);
-	insertPlynTerm(&expr2, 4, 0);
+	struct lnode *expr2 = createPlynExpr(3, 1);
 	
 	printf("second expr:\t");
 	printExpr(expr2);
@@ -66,7 +57,7 @@ int main(int argc, char *argv[])
 	struct lnode *div = divPlynExpr(expr1, expr2);
 	printf("div:\t\t");
 	if (div == NULL) {
-		printf("unsupported\n");
+		printf("not possible to divide\n");
 	} else {
 		printExpr(div);
 	}
@@ -172,15 +163,11 @@ struct lnode *subPlynExpr(struct lnode *expr1, struct lnode *expr2)
 	return sub;
 }
 
-/*	w.i.p function to multiply a polynomial expression
- *	not fully supported yet (20/05/2026)
- *	mostly correct if size(expr1) <= 2.
- *	still needs to be fixed for size(expr1) > 2
+/*	function to multiply a polynomial expression
+ *	works as intended for most polynomials
 */
 struct lnode *mulPlynExpr(struct lnode *expr1, struct lnode *expr2)
 {
-	if (getLsize(expr1) > 2) return NULL;
-
 	struct lnode *mul = NULL;
 
 	struct lnode *p = expr1;
@@ -210,16 +197,10 @@ struct lnode *mulPlynExpr(struct lnode *expr1, struct lnode *expr2)
 
 /* 	w.i.p function to divide a polynomial expression
  *  	not fully supported yet (20/05/2026)
- * 	works fine as long as size(expr1) and size(expr2) are both <= 2.
- * 	AND
- * 	expr1 is divisible by expr2 as these lists have integer data
- * 	bigger expressions aren't supported yet
+ *  	working for any size of expr1 if size(expr2) == 1
 */
 struct lnode *divPlynExpr(struct lnode *expr1, struct lnode *expr2)
 {
-	if (getLsize(expr1) > 2) return NULL;
-	if (getLsize(expr2) > 2) return NULL;
-
 	struct lnode *div = NULL;
 	struct lnode *mul = NULL;
 	struct lnode *sub = NULL;
@@ -229,16 +210,26 @@ struct lnode *divPlynExpr(struct lnode *expr1, struct lnode *expr2)
 	int found = 0;
 	struct lnode *p = expr1;
 	struct lnode *q = expr2;
+	int qLength = getLsize(expr2);
 	while (p != NULL && q != NULL && found == 0) {
 		struct plyn *term1 = (struct plyn*)p->data;
 		struct plyn *term2 = (struct plyn*)q->data;
 
-		if (i == 1) {
-			if (term1->coeff % term2->coeff != 0) break;
+		if (i == 1 || qLength == 1) {
 			int coeff = term1->coeff / term2->coeff;
 			int power = term1->power - term2->power;
 			
-			div = createPlynExpr(coeff, power);
+			if (div == NULL) {
+				div = createPlynExpr(coeff, power);
+				if (qLength == 1) p = p->next;
+			} else if (qLength == 1) {
+				insertPlynTerm(&div, coeff, power);
+				p = p->next;
+				if (p == NULL) {
+					found = 1;
+					break;
+				}
+			}
 		} else {
 			if (tosub == NULL) {
 				tosub = expr1;
@@ -246,34 +237,40 @@ struct lnode *divPlynExpr(struct lnode *expr1, struct lnode *expr2)
 				tosub = sub;
 			}
 			if (mul != NULL) freeList(&mul);
-			if (sub != NULL) freeList(&sub);
 
-			mul = mulPlynExpr(expr2, div);
+			struct lnode *divp = div;
+			while (divp->next != NULL) {
+				divp = divp->next;
+			}
+
+			mul = mulPlynExpr(expr2, divp);
 			if (mul == NULL) return NULL;
 
 			sub = subPlynExpr(tosub, mul);
+ 
+			struct plyn *subterm = NULL;
+			struct lnode *subp = NULL;
+			if (sub != NULL) {
+				subterm = (struct plyn*)sub->data;
+				subp = sub;
+			}
 
-			struct plyn *subterm = (struct plyn*)sub->data;
-			struct lnode *subp = sub;
-
+			printExpr(div);
 			found = 1;
 			while (subp != NULL) {
-				subterm = (struct plyn*)subp->data;
-				if (subterm->coeff != 0) {
+				struct plyn *subterm2 = (struct plyn*)subp->data;
+				if (subterm2->coeff != 0) {
 					found = 0;
 				}
 				subp = subp->next;
 			}
 			if (found == 1) break;
 			
-			if ((subterm->coeff % term2->coeff) != 0) break;
 			int coeff = subterm->coeff / term2->coeff;
 			int power = subterm->power - term2->power;
 			insertPlynTerm(&div, coeff, power);
+			q = q->next;
 		}
-		p = p->next;
-		q = q->next;
-	
 		i++;
 	}
 	freeList(&mul);
