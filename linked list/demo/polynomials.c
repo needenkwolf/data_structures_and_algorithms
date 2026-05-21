@@ -31,8 +31,10 @@ int main(int argc, char *argv[])
 	printf("first expr:\t");
 	printExpr(expr1);
 
-	struct lnode *expr2 = createPlynExpr(3, 1);
+	struct lnode *expr2 = createPlynExpr(3, 3);
 	
+	insertPlynTerm(&expr2, -12, 2);
+	insertPlynTerm(&expr2, 12, 1);
 	printf("second expr:\t");
 	printExpr(expr2);
 
@@ -197,7 +199,7 @@ struct lnode *mulPlynExpr(struct lnode *expr1, struct lnode *expr2)
 
 /* 	w.i.p function to divide a polynomial expression
  *  	not fully supported yet (20/05/2026)
- *  	working for any size of expr1 if size(expr2) == 1
+ *  	
 */
 struct lnode *divPlynExpr(struct lnode *expr1, struct lnode *expr2)
 {
@@ -210,25 +212,17 @@ struct lnode *divPlynExpr(struct lnode *expr1, struct lnode *expr2)
 	int found = 0;
 	struct lnode *p = expr1;
 	struct lnode *q = expr2;
-	int qLength = getLsize(expr2);
 	while (p != NULL && q != NULL && found == 0) {
 		struct plyn *term1 = (struct plyn*)p->data;
 		struct plyn *term2 = (struct plyn*)q->data;
 
-		if (i == 1 || qLength == 1) {
+		if (i == 1) {
+			if ((term1->coeff % term2->coeff) != 0) break;
 			int coeff = term1->coeff / term2->coeff;
 			int power = term1->power - term2->power;
 			
 			if (div == NULL) {
 				div = createPlynExpr(coeff, power);
-				if (qLength == 1) p = p->next;
-			} else if (qLength == 1) {
-				insertPlynTerm(&div, coeff, power);
-				p = p->next;
-				if (p == NULL) {
-					found = 1;
-					break;
-				}
 			}
 		} else {
 			if (tosub == NULL) {
@@ -255,7 +249,6 @@ struct lnode *divPlynExpr(struct lnode *expr1, struct lnode *expr2)
 				subp = sub;
 			}
 
-			printExpr(div);
 			found = 1;
 			while (subp != NULL) {
 				struct plyn *subterm2 = (struct plyn*)subp->data;
@@ -266,10 +259,10 @@ struct lnode *divPlynExpr(struct lnode *expr1, struct lnode *expr2)
 			}
 			if (found == 1) break;
 			
+			if ((subterm->coeff % term2->coeff) != 0) break;
 			int coeff = subterm->coeff / term2->coeff;
 			int power = subterm->power - term2->power;
 			insertPlynTerm(&div, coeff, power);
-			q = q->next;
 		}
 		i++;
 	}
