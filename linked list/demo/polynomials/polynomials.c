@@ -27,6 +27,10 @@ struct lnode *addPlynExpr(struct lnode *expr1, struct lnode *expr2)
 {
 	struct lnode *sum = NULL;
 
+	struct llist *sum_list = malloc(sizeof(struct llist));
+	sum_list->head = NULL;
+	sum_list->tail = NULL;
+
 	struct lnode *p = expr1;
 	struct lnode *q = expr2;
 	while (p != NULL && q != NULL) {
@@ -37,23 +41,29 @@ struct lnode *addPlynExpr(struct lnode *expr1, struct lnode *expr2)
 			int res = term1->coeff + term2->coeff;
 			if (sum == NULL) {
 				sum = createPlynExpr(res, term1->power);
+				sum_list->head = sum;
+				sum_list->tail = sum;
 			} else {
-				insertPlynTerm(&sum, res, term1->power);
+				sum_list->tail = insertPlynTerm(&(sum_list->tail), res, term1->power);
 			}
 		} else {
 			if (term1->power > term2->power) {
 				if (sum == NULL) {
 					sum = createPlynExpr(term1->coeff, term1->power);
+					sum_list->head = sum;
+					sum_list->tail = sum;
 				} else {
-					insertPlynTerm(&sum, term1->coeff, term1->power);
+					sum_list->tail = insertPlynTerm(&(sum_list->tail), term1->coeff, term1->power);
 				}
 				p = p->next;
 				continue;
 			} else {
 				if (sum == NULL) {
 					sum = createPlynExpr(term2->coeff, term2->power);
+					sum_list->head = sum;
+					sum_list->tail = sum;
 				} else {
-					insertPlynTerm(&sum, term2->coeff, term2->power);
+					sum_list->tail = insertPlynTerm(&(sum_list->tail), term2->coeff, term2->power);
 				}
 				q = q->next;
 				continue;
@@ -64,12 +74,12 @@ struct lnode *addPlynExpr(struct lnode *expr1, struct lnode *expr2)
 	}
 	while (p != NULL && sum != NULL) {
 		struct plyn *term1 = (struct plyn*)p->data;
-		insertPlynTerm(&sum, term1->coeff, term1->power);
+		sum_list->tail = insertPlynTerm(&(sum_list->tail), term1->coeff, term1->power);
 		p = p->next;
 	}
 	while (q != NULL && sum != NULL) {
 		struct plyn *term2 = (struct plyn*)q->data;
-		insertPlynTerm(&sum, term2->coeff, term2->power);
+		insertPlynTerm(&(sum_list->tail), term2->coeff, term2->power);
 		q = q->next;
 	}
 	simplifyPlynExpr(&sum);
@@ -109,6 +119,10 @@ struct lnode *mulPlynExpr(struct lnode *expr1, struct lnode *expr2)
 {
 	struct lnode *mul = NULL;
 
+	struct llist *mul_list = malloc(sizeof(struct llist));
+	mul_list->head = NULL;
+	mul_list->tail = NULL;
+
 	struct lnode *p = expr1;
 	struct lnode *q = expr2;
 	while (p != NULL && q != NULL) {
@@ -120,8 +134,10 @@ struct lnode *mulPlynExpr(struct lnode *expr1, struct lnode *expr2)
 
 		if (mul == NULL) {
 			mul = createPlynExpr(coeff, power);
+			mul_list->head = mul;
+			mul_list->tail = mul;
 		} else {
-			insertPlynTerm(&mul, coeff, power);
+			mul_list->tail = insertPlynTerm(&(mul_list->tail), coeff, power);
 		}
 		p = p->next;
 		if (p == NULL && q != NULL) {
@@ -145,6 +161,10 @@ struct lnode *divPlynExpr(struct lnode *expr1, struct lnode *expr2)
 	struct lnode *sub = NULL;
 	struct lnode *tosub = NULL;
 
+	struct llist *div_list = malloc(sizeof(struct llist));
+	div_list->head = NULL;
+	div_list->tail = NULL;
+
 	int i = 1;
 	int found = 0;
 	struct lnode *p = expr1;
@@ -160,6 +180,8 @@ struct lnode *divPlynExpr(struct lnode *expr1, struct lnode *expr2)
 			
 			if (div == NULL) {
 				div = createPlynExpr(coeff, power);
+				div_list->head = div;
+				div_list->tail = div;
 			}
 		} else {
 			if (tosub == NULL) {
@@ -199,7 +221,7 @@ struct lnode *divPlynExpr(struct lnode *expr1, struct lnode *expr2)
 			if ((subterm->coeff % term2->coeff) != 0) break;
 			int coeff = subterm->coeff / term2->coeff;
 			int power = subterm->power - term2->power;
-			insertPlynTerm(&div, coeff, power);
+			div_list->tail = insertPlynTerm(&(div_list->tail), coeff, power);
 		}
 		i++;
 	}
@@ -225,10 +247,13 @@ struct lnode *simplifyPlynExpr(struct lnode **expr)
 	struct plyn *data = (struct plyn*)p->data;
 	struct lnode *smpl_expr = NULL;
 
+	struct llist *smpl_list = malloc(sizeof(struct llist));
+	smpl_list->head = NULL;
+	smpl_list->tail = NULL;
+
 	int biggest_pow = data->power;
 
 	int *coeff_arr = malloc(sizeof(int) * MAX_COEFF);
-
 
 	for (i = 0; i < MAX_COEFF; i++) {
 		p = *expr;
@@ -244,10 +269,14 @@ struct lnode *simplifyPlynExpr(struct lnode **expr)
 	i = 0;
 	p = *expr;
 	while (p != NULL) {
-		if (smpl_expr == NULL)
+		if (smpl_expr == NULL) {
 			smpl_expr = createPlynExpr(coeff_arr[i], biggest_pow - i);
-		else 
-			insertPlynTerm(&smpl_expr, coeff_arr[i], biggest_pow - i);
+			smpl_list->head = smpl_expr;
+			smpl_list->tail = smpl_expr;
+		}
+		else {
+			smpl_list->tail = insertPlynTerm(&(smpl_list->tail), coeff_arr[i], biggest_pow - i);
+		}
 		
 		p = p->next;
 		i++;
