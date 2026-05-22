@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "../../list.h"
 #include "polynomials.h"
 
@@ -18,6 +19,15 @@ int main(int argc, char *argv[])
 	while (1) {
 		struct lnode *expr1 = NULL;
 		struct lnode *expr2 = NULL;
+
+		struct llist *list1 = malloc(sizeof(struct llist));
+		list1->head = NULL;
+		list1->tail = NULL;
+
+		struct llist *list2 = malloc(sizeof(struct llist));
+		list1->head = NULL;
+		list1->tail = NULL;
+
 		int s1 = 1;
 		int s2 = 1;
 		int c = 1;
@@ -39,8 +49,10 @@ int main(int argc, char *argv[])
 			
 			if (expr1 == NULL) {
 				expr1 = createPlynExpr(c, p);
+				list1->head = expr1;
+				list1->tail = expr1;
 			} else {
-				insertPlynTerm(&expr1, c, p);
+				list1->tail = insertPlynTerm(&(list1->tail), c, p);
 			}
 		}
 		if (expr1 == NULL) return -1;
@@ -69,8 +81,10 @@ int main(int argc, char *argv[])
 
 			if (expr2 == NULL) {
 				expr2 = createPlynExpr(c, p);
+				list2->head = expr2;
+				list2->tail = expr2;
 			} else {
-				insertPlynTerm(&expr2, c, p);
+				list2->tail = insertPlynTerm(&(list2->tail), c, p);
 			}
 		}
 		if (expr2 == NULL) return -1;
