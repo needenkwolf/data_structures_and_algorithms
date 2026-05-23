@@ -17,6 +17,7 @@ void deleteAtLend(struct lnode **head)
 struct lnode *deleteAtLbegin(struct lnode **head)
 {
 	if (head == NULL) return NULL;
+	if ((*head) == NULL) return NULL;
 
 	struct lnode *next = (*head)->next;
 	free((*head));
@@ -27,6 +28,7 @@ struct lnode *deleteAtLbegin(struct lnode **head)
 struct lnode *deleteAtLpos(struct lnode **head, int pos)
 {
 	if (head == NULL) return NULL;
+	if ((*head) == NULL) return NULL;
 
 	if (pos <= 0) return NULL;
 	if (pos == 1) return deleteAtLbegin(head);
@@ -35,11 +37,13 @@ struct lnode *deleteAtLpos(struct lnode **head, int pos)
 	struct lnode *p = (*head);
 
 	int i = 2;
-	while (p->next->next != NULL && i < pos - 1) {
+	while (p->next->next != NULL && i < pos) {
 		p = p->next;
 		i++;
 	}
-	if (p->next == NULL || p->next->next == NULL) return NULL;
+
+	if (p == NULL) return NULL;
+	if (p->next == NULL) return NULL;
 	
 	temp = p->next->next;
 
@@ -50,5 +54,5 @@ struct lnode *deleteAtLpos(struct lnode **head, int pos)
 		p->next = temp;
 	}
 	
-	return p;
+	return p->next;
 }

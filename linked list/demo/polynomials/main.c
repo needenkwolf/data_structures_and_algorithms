@@ -5,16 +5,14 @@
 
 int main(int argc, char *argv[]) 
 {
-	printf("\n");
-	printf("--------------------------------\n");
+	printf("\n--------------------------------\n");
 	printf("PLEASE ENTER YOUR INPUT\n");
 	printf("EXAMPLE:\t 4x^2\n");
 	printf("EXAMPLE:\t 1x^1\n");
 	printf("EXAMPLE:\t 8\n");
 	printf("EXAMPLE:\t 0\n");
 	printf("[OUTPUT]:\t 4x^2 + 1x^1 + 8\n");
-	printf("--------------------------------\n");
-	printf("\n");
+	printf("\n--------------------------------\n");
 
 	while (1) {
 		struct lnode *expr1 = NULL;
@@ -91,7 +89,6 @@ int main(int argc, char *argv[])
 		printf("\nsecond expr:\t");
 		simplifyPlynExpr(&expr2);
 		printExpr(expr2);
-
 
 		struct plyn *term1 = (struct plyn*)expr1->data;
 		struct plyn *term2 = (struct plyn*)expr2->data;

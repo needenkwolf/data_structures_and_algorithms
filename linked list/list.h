@@ -12,6 +12,16 @@ struct dlnode {
 	struct dlnode *prev;
 };
 
+struct llist {
+	struct lnode *head;
+	struct lnode *tail;
+};
+
+struct dllist {
+	struct dlnode *head;
+	struct dlnode *tail;
+};
+
 struct lnode *createLnode(void *data);
 
 struct lnode *insertAtLend(struct lnode **head, void *data);
@@ -30,5 +40,7 @@ void printLaddr(struct lnode *l, char data_type);
 void printList(struct lnode *l, char data_type);
 
 void freeList(struct lnode **l);
+
+struct lnode *dlnodeTolnode(struct dlnode *dl);
 
 #endif
