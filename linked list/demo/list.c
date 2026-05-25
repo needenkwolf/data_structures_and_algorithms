@@ -2,27 +2,29 @@
 #include <stdlib.h>
 #include "../list.h"
 
+struct lnode *createIntegerList(int number)
+{
+	int *n = malloc(sizeof(int));
+	*n = number;
+	return createLnode((void*)n);
+}
+
+void insertInteger(struct lnode **l, int number)
+{
+	int *n = malloc(sizeof(int));
+	*n = number;
+	insertAtLend(l, (void*)n);
+}
+
 int main(int argc, char *argv[])
 {
-	int h = 2;
-	struct lnode *head = createLnode((void*)&h);
+	struct lnode *head = createIntegerList(2);
 
-	int n = 7;
-	insertAtLend(&head, (void*)&n);
+	insertInteger(&head, 7);
 
-	int m = 5;
-	insertAtLbegin(&head, (void*)&m);
+	insertInteger(&head, 4);
 
-	printList(head, 'd');
-
-	int o = 6;
-	insertAtLpos(&head, 3, (void*)&o);
-
-	printList(head, 'd');
-
-	deleteAtLpos(&head, 4);
-	deleteAtLbegin(&head);
-	deleteAtLend(&head);
+	insertInteger(&head, 3);
 
 	printList(head, 'd');
 
@@ -37,6 +39,22 @@ int main(int argc, char *argv[])
 	} else {
 		printf("value not found\n");
 	}
+
+	createLcycle(head);
+	if (checkLcircular(head)) {
+		printf("Yes, it is circular!\n");
+	} else {
+		printf("No, it is not circular!\n");
+	}
+	undoLcycle(head);
+	if (checkLcircular(head)) {
+		printf("Yes, it is circular!\n");
+	} else {
+		printf("No, it is not circular!\n");
+	}
+
+	struct lnode *middle = getLmiddleNode(head);
+	printList(middle, 'd');
 
 	freeList(&head);
 	if (head == NULL) printf("list freed!\n");

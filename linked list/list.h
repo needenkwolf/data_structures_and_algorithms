@@ -34,12 +34,20 @@ struct lnode *deleteAtLpos(struct lnode **head, int pos);
 
 int getLsize(struct lnode *head);
 struct lnode *getLnode(struct lnode *head, int index);
+struct lnode *getLmiddleNode(struct lnode *head);
 int searchLnode(struct lnode *head, int data);
 
 void printLaddr(struct lnode *l, char data_type);
 void printList(struct lnode *l, char data_type);
 
 void freeList(struct lnode **l);
+
+struct lnode *reverseList(struct lnode *l);
+
+struct lnode *createLcycle(struct lnode *head);
+struct lnode *undoLcycle(struct lnode *head);
+int checkLcircular(struct lnode *l);
+void freeListCircular(struct lnode **l);
 
 struct lnode *dlnodeTolnode(struct dlnode *dl);
 

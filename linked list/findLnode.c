@@ -22,6 +22,18 @@ struct lnode *getLnode(struct lnode *head, int index)
 	return head;
 }
 
+struct lnode *getLmiddleNode(struct lnode *l) {
+	struct lnode *slow = l;
+	struct lnode *fast = l;
+
+	while (fast != NULL && fast->next != NULL) {
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+	
+	return slow;
+}
+
 int searchLnode(struct lnode *head, int data)
 {
 	for (int i = 1; head != NULL; i++) {

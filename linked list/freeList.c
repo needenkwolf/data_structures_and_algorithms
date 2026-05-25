@@ -11,3 +11,18 @@ void freeList(struct lnode **l)
 		*l = p;
 	}
 }
+
+void freeListCircular(struct lnode **l)
+{
+	struct lnode *p = NULL;
+	struct lnode *head = *l;
+	while (*l != NULL) {
+		p = (*l)->next;
+		if (*l != head) {
+			free(*l);
+			*l = p;
+		} else {
+			*l = NULL;
+		}
+	}
+}
