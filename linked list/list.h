@@ -72,4 +72,7 @@ struct dlnode *createDLcycle(struct dlnode *head);
 struct dlnode *undoDLcycle(struct dlnode *head);
 int checkDLcircular(struct dlnode *head);
 
+void *createArrayFromList(struct lnode *head, int size, int sizePerItem);
+struct lnode *createListFromArray(void *array, int size, int sizePerItem);
+
 #endif

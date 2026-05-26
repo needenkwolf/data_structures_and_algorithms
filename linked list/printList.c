@@ -97,9 +97,62 @@ void printLaddrCircular(struct lnode *l, char data_type)
 	} while (l != head);
 }
 
+static void printDListReverse(struct dlnode *dl, char data_type)
+{
+	printf("LIST: ");
+	while (dl != NULL) {
+		switch (data_type) {
+			case 'd':
+				printf("%d -> ", *((int*)dl->data));
+				break;
+			case 'f':
+				printf("%f -> ", *((double*)dl->data));
+				break;
+			case 'c':
+				printf("%c -> ", *((char*)dl->data));
+				break;
+			case 's':
+				printf("%s -> ", *((char*)dl->data));
+				break;
+		}
+		dl = dl->prev;
+	}
+	printf("NULL\n");
+}
+
+static void printDListCircularReverse(struct dlnode *dl, char data_type)
+{
+	printf("LIST: ");
+
+	struct dlnode *tail = dl;
+	do {
+		switch (data_type) {
+			case 'd':
+				printf("%d -> ", *((int*)dl->data));
+				break;
+			case 'f':
+				printf("%f -> ", *((double*)dl->data));
+				break;
+			case 'c':
+				printf("%c -> ", *((char*)dl->data));
+				break;
+			case 's':
+				printf("%s -> ", *((char*)dl->data));
+				break;
+		}
+		dl = dl->prev;
+	} while (dl != tail);
+
+	printf("...\n");
+}
+
 void printDList(struct dlnode *dl, char data_type)
 {
-	printList((struct lnode*)dl, data_type);
+	if (dl->next != NULL) {
+		printList((struct lnode*)dl, data_type);
+	} else {
+		printDListReverse(dl, data_type);
+	}
 }
 
 void printDLaddr(struct dlnode *dl, char data_type)
@@ -108,8 +161,12 @@ void printDLaddr(struct dlnode *dl, char data_type)
 }
 
 void printDListCircular(struct dlnode *dl, char data_type)
-{
-	printListCircular((struct lnode*)dl, data_type);
+{	
+	if (dl->next != NULL) {
+		printListCircular((struct lnode*)dl, data_type);
+	} else {
+		printDListCircularReverse(dl, data_type);
+	}
 }
 
 void printDLaddrCircular(struct dlnode *dl, char data_type)

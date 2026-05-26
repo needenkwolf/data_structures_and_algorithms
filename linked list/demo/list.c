@@ -9,18 +9,25 @@ struct lnode *createIntegerList(int number)
 	return createLnode((void*)n);
 }
 
-void insertInteger(struct lnode **l, int number)
+struct dlnode *createIntegerDList(int number)
 {
 	int *n = malloc(sizeof(int));
 	*n = number;
-	insertAtLend(l, (void*)n);
+	return createDLnode((void*)n);
 }
 
-void insertDLinteger(struct dlnode **dl, int number)
+struct lnode *insertInteger(struct lnode **l, int number)
 {
 	int *n = malloc(sizeof(int));
 	*n = number;
-	insertAtDLend(dl, (void*)n);
+	return insertAtLend(l, (void*)n);
+}
+
+struct dlnode *insertDLinteger(struct dlnode **dl, int number)
+{
+	int *n = malloc(sizeof(int));
+	*n = number;
+	return insertAtDLend(dl, (void*)n);
 }
 
 int main(int argc, char *argv[])
@@ -65,20 +72,39 @@ int main(int argc, char *argv[])
 	printList(middle, 'd');
 
 	struct dlnode *dl = lnodeTodlnode(head);
+	struct dlnode *dltail = dl;
+	dltail = insertDLinteger(&dltail, 16);
+	dltail = insertDLinteger(&dltail, 32);
 	printDList(dl, 'd');
-	insertDLinteger(&dl, 16);
-	insertDLinteger(&dl, 32);
+	printDList(dltail, 'd');
 
 	deleteAtDLbegin(&dl);
 
-	printDList(dl, 'd');
 	printList(head, 'd');
 
 	createDLcycle(dl);
 	printDListCircular(dl, 'd');
 	undoDLcycle(dl);
 
+
+	printList(head, 'd');
+
+	int *array = createArrayFromList(head, (getLsize(head) * sizeof(int)), sizeof(int));
+
+	printf("array: ");
+	for (int i = 0; i < getLsize(head); i++) {
+		printf("%d ", array[i]);
+	}
+	printf("\n");
+
+	int array2[3] = {78, 32, 18};
+
+	struct lnode *lArr = createListFromArray(array2, 3 * sizeof(int), sizeof(int));
+
+	printList(lArr, 'd');
+
 	freeList(&head);
+	freeList(&lArr);
 	freeDList(&dl);
 	if (head == NULL && dl == NULL) printf("freed!\n");
 	return 0;
