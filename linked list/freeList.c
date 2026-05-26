@@ -26,3 +26,8 @@ void freeListCircular(struct lnode **l)
 		}
 	}
 }
+
+void freeDList(struct dlnode **dl)
+{
+	freeList((struct lnode**)dl);
+}

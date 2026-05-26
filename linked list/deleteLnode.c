@@ -4,20 +4,29 @@
 
 void deleteAtLend(struct lnode **head)
 {
-	if (head == NULL) return;
+	if (head == NULL || *head == NULL) 
+		return;
+
+	if ((*head)->next) {
+		free(*head);
+		*head = NULL;
+		return;
+	}
 
 	struct lnode *p = (*head);
+
 	while (p->next->next != NULL) {
 		p = p->next;
 	}
+
 	free(p->next);
 	p->next = NULL;
 }
 
 struct lnode *deleteAtLbegin(struct lnode **head)
 {
-	if (head == NULL) return NULL;
-	if ((*head) == NULL) return NULL;
+	if (head == NULL || *head == NULL) 
+		return NULL;
 
 	struct lnode *next = (*head)->next;
 	free((*head));
@@ -27,8 +36,8 @@ struct lnode *deleteAtLbegin(struct lnode **head)
 
 struct lnode *deleteAtLpos(struct lnode **head, int pos)
 {
-	if (head == NULL) return NULL;
-	if ((*head) == NULL) return NULL;
+	if (head == NULL || *head == NULL) 
+		return NULL;
 
 	if (pos <= 0) return NULL;
 	if (pos == 1) return deleteAtLbegin(head);
@@ -55,4 +64,38 @@ struct lnode *deleteAtLpos(struct lnode **head, int pos)
 	}
 	
 	return p->next;
+}
+
+void deleteAtDLend(struct dlnode **dl)
+{
+	if (dl == NULL || *dl == NULL) 
+		return;
+
+	if ((*dl)->next == NULL) {
+		struct dlnode *prev = (*dl)->prev;
+		free(*dl);
+		*dl = prev;
+		return;
+	}
+
+	struct dlnode *p = *dl;
+
+	while (p->next->next != NULL) {
+		p = p->next;
+	}
+
+	free(p->next);
+	p->next = NULL;
+}
+
+struct dlnode *deleteAtDLbegin(struct dlnode **head)
+{
+	struct dlnode *ret = (struct dlnode*)deleteAtLbegin((struct lnode**)head);
+	(*head)->prev = NULL;
+	return ret;
+}
+
+struct dlnode *deleteAtDLpos(struct dlnode **head, int pos)
+{
+	return (struct dlnode*)deleteAtLpos((struct lnode**)head, pos);
 }

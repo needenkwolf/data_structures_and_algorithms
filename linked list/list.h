@@ -48,7 +48,28 @@ struct lnode *createLcycle(struct lnode *head);
 struct lnode *undoLcycle(struct lnode *head);
 int checkLcircular(struct lnode *l);
 void freeListCircular(struct lnode **l);
+void printListCircular(struct lnode *l, char data_type);
+void printLaddrCircular(struct lnode *l, char data_type);
 
 struct lnode *dlnodeTolnode(struct dlnode *dl);
+struct dlnode *lnodeTodlnode(struct lnode *sl);
+
+void printDList(struct dlnode *dl, char data_type);
+void printDLaddr(struct dlnode *dl, char data_type);
+void printDListCircular(struct dlnode *dl, char data_type);
+void printDLaddrCircular(struct dlnode *dl, char data_type);
+void freeDList(struct dlnode **dl);
+
+struct dlnode *createDLnode(void *data);
+struct dlnode *insertAtDLend(struct dlnode **head, void *data);
+struct dlnode *insertAtDLbegin(struct dlnode **head, void *data);
+struct dlnode *insertAtDLpos(struct dlnode **head, int pos, void *data);
+void deleteAtDLend(struct dlnode **dl);
+struct dlnode *deleteAtDLbegin(struct dlnode **head);
+struct dlnode *deleteAtDLpos(struct dlnode **head, int pos);
+
+struct dlnode *createDLcycle(struct dlnode *head);
+struct dlnode *undoDLcycle(struct dlnode *head);
+int checkDLcircular(struct dlnode *head);
 
 #endif

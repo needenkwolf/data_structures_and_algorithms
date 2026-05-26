@@ -13,3 +13,16 @@ struct lnode *createLnode(void *data)
 
 	return l;
 }
+
+struct dlnode *createDLnode(void *data)
+{
+	struct dlnode *dl = (struct dlnode*)malloc(sizeof(struct dlnode));
+
+	if (dl == NULL) return NULL;
+
+	dl->data = (void*)data;
+	dl->next = NULL;
+	dl->prev = NULL;
+
+	return dl;
+}

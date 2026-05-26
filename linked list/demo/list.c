@@ -16,6 +16,13 @@ void insertInteger(struct lnode **l, int number)
 	insertAtLend(l, (void*)n);
 }
 
+void insertDLinteger(struct dlnode **dl, int number)
+{
+	int *n = malloc(sizeof(int));
+	*n = number;
+	insertAtDLend(dl, (void*)n);
+}
+
 int main(int argc, char *argv[])
 {
 	struct lnode *head = createIntegerList(2);
@@ -46,6 +53,7 @@ int main(int argc, char *argv[])
 	} else {
 		printf("No, it is not circular!\n");
 	}
+	printListCircular(head, 'd');
 	undoLcycle(head);
 	if (checkLcircular(head)) {
 		printf("Yes, it is circular!\n");
@@ -56,7 +64,22 @@ int main(int argc, char *argv[])
 	struct lnode *middle = getLmiddleNode(head);
 	printList(middle, 'd');
 
+	struct dlnode *dl = lnodeTodlnode(head);
+	printDList(dl, 'd');
+	insertDLinteger(&dl, 16);
+	insertDLinteger(&dl, 32);
+
+	deleteAtDLbegin(&dl);
+
+	printDList(dl, 'd');
+	printList(head, 'd');
+
+	createDLcycle(dl);
+	printDListCircular(dl, 'd');
+	undoDLcycle(dl);
+
 	freeList(&head);
-	if (head == NULL) printf("list freed!\n");
+	freeDList(&dl);
+	if (head == NULL && dl == NULL) printf("freed!\n");
 	return 0;
 }

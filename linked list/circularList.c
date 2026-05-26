@@ -12,7 +12,8 @@ struct lnode *createLcycle(struct lnode *head)
 	return head;
 }
 
-struct lnode *undoLcycle(struct lnode *head){
+struct lnode *undoLcycle(struct lnode *head)
+{
 	struct lnode *p = head;
 	while (p->next != head) {
 		p = p->next;
@@ -21,6 +22,7 @@ struct lnode *undoLcycle(struct lnode *head){
 
 	return head;
 }
+
 
 int checkLcircular(struct lnode *l)
 {
@@ -37,4 +39,37 @@ int checkLcircular(struct lnode *l)
 	}
 
 	return 0;
+}
+
+struct dlnode *createDLcycle(struct dlnode *head)
+{
+	struct dlnode *p = head;
+
+	while (p->next != NULL) {	
+		p = p->next;
+	}
+
+	p->next = head;
+	head->prev = p;
+
+	return head;
+}
+
+struct dlnode *undoDLcycle(struct dlnode *head)
+{
+	struct dlnode *p = head;
+
+	while (p->next != head) {
+		p = p->next;
+	}
+
+	p->next = NULL;
+	head->prev = NULL;
+
+	return head;
+}
+
+int checkDLcircular(struct dlnode *dl)
+{
+	return checkLcircular((struct lnode*)dl);
 }
