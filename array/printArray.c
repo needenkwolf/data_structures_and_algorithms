@@ -15,7 +15,7 @@ void printArray(void *array, int size, char data_type)
 				printf("%c ", *((char *)array + i));
 				break;
 			case 's':
-				printf("%s ", ((char *)array + i));
+				printf("%s ", *((char **)array + i));
 				break;
 		}
 	}
