@@ -4,9 +4,9 @@
 #include "array.h"
 #include "../general/general.h"
 
-void *lsearchArray(void *array, void *searching, int size, char data_type)
+void *lsearchArray(void *array, void *searching, int n, char data_type)
 {
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < n; i++) {
 		switch (data_type) {
 			case 'd':
 				if (*((int*)array + i) == *(int*)searching)	 		return (int*)array + i;
@@ -26,18 +26,18 @@ void *lsearchArray(void *array, void *searching, int size, char data_type)
 	return NULL;
 }
 
-void *bsearchArray(void *array, void *searching, int size, int sizePerItem, char data_type)
+void *bsearchArray(void *array, void *searching, int n, int sizePerItem, char data_type)
 {
 	void *found_item = NULL;
 
 	switch (data_type) {
 		case 'd':
 		case 'f':
-			found_item = bsearch(searching, array, size / sizePerItem, sizePerItem, compareNumeric);
+			found_item = bsearch(searching, array, n, sizePerItem, compareNumeric);
 			break;
 		case 'c':
 		case 's':
-			found_item = bsearch(searching, array, size / sizePerItem, sizePerItem, compareString);
+			found_item = bsearch(searching, array, n, sizePerItem, compareString);
 			break;
 	}
 

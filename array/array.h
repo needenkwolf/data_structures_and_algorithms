@@ -1,10 +1,18 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
-void printArray(void *array, int size, char data_type);
+#define PRINT_ARRAY(array, n, toprint, ...) \
+		printf("array: "); \
+		for (int i = 0; i < n; i++) { \
+			printf(toprint, __VA_ARGS__); \
+		} \
+		printf("\n");					
 
-void *lsearchArray(void *array, void *searching, int size, char data_type);
-void *bsearchArray(void *array, void *searching, int size, int sizePerItem, char data_type);
+
+void printArray(void *array, int n, char data_type);
+
+void *lsearchArray(void *array, void *searching, int n, char data_type);
+void *bsearchArray(void *array, void *searching, int n, int sizePerItem, char data_type);
 
 void qsortArray(void *array, int size, int sizePerItem, char data_type);
 
