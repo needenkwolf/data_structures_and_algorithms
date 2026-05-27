@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../list.h"
+#include "../../linkedlist/list.h"
 
 struct lnode *createIntegerList(int number)
 {
