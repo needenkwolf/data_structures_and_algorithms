@@ -3,15 +3,22 @@
 #include "array.h"
 #include "../general/general.h"
 
-void qsortArray(void *array, int n, int sizePerItem, char data_type)
+void qsortArray(void *array, int n, int sizePerItem, int type, int (*compare)(const void*, const void*))
 {
-	switch (data_type) {
-		case 'd':
-		case 'f':
+	switch (type) {
+		case TYPE_INT:
+		case TYPE_FLOAT:
+		case TYPE_DOUBLE:
 			qsort(array, n, sizePerItem, compareNumeric);
 			break;
-		case 's':
+		case TYPE_STRING:
 			qsort(array, n, sizePerItem, compareString);
+			break;
+		case TYPE_CUSTOM:
+			qsort(array, n, sizePerItem, compare);
+			break;
+		default:
+			fprintf(stderr, "error (qsortArray): unknown type"); 
 			break;
 	}
 }
