@@ -1,22 +1,30 @@
 #include <stdio.h>
 #include "list.h"
+#include "../general/general.h"
 
-void printList(struct lnode *l, char data_type)
+void printList(struct lnode *l, int type, void (*print)(void*))
 {
 	printf("LIST: ");
 	while (l != NULL) {
-		switch (data_type) {
-			case 'd':
+		switch (type) {
+			case TYPE_INT:
 				printf("%d -> ", *((int*)l->data));
 				break;
-			case 'f':
+			case TYPE_FLOAT:
+			case TYPE_DOUBLE:
 				printf("%f -> ", *((double*)l->data));
 				break;
-			case 'c':
+			case TYPE_CHAR:
 				printf("%c -> ", *((char*)l->data));
 				break;
-			case 's':
-				printf("%s -> ", *((char*)l->data));
+			case TYPE_STRING:
+				printf("%s -> ", *((char**)l->data));
+				break;
+			case TYPE_CUSTOM:
+				print(l->data);
+				break;
+			default:
+				fprintf(stderr, "error printing list: invalid type\n");
 				break;
 		}
 		l = l->next;
@@ -24,22 +32,29 @@ void printList(struct lnode *l, char data_type)
 	printf("NULL\n");
 }
 
-void printLaddr(struct lnode *l, char data_type)
+void printLaddr(struct lnode *l, int type, void (*print)(void*))
 {
 	printf("LIST ADDRESSES\n");
 	while (l != NULL) {
-		switch (data_type) {
-			case 'd':
+		switch (type) {
+			case TYPE_INT:
 				printf("%p: %d\n", l, *((int*)l->data));
 				break;
-			case 'f':
+			case TYPE_FLOAT:
+			case TYPE_DOUBLE:
 				printf("%p: %f\n", l, *((double*)l->data));
 				break;
-			case 'c':
+			case TYPE_CHAR:
 				printf("%p: %c\n", l, *((char*)l->data));
 				break;
-			case 's':
-				printf("%p: %s\n", l, *((char*)l->data));
+			case TYPE_STRING:
+				printf("%p: %s\n", l, *((char**)l->data));
+				break;
+			case TYPE_CUSTOM:
+				print(l->data);
+				break;
+			default:
+				fprintf(stderr, "error printing list: invalid type\n");
 				break;
 		}
 		l = l->next;
@@ -47,24 +62,31 @@ void printLaddr(struct lnode *l, char data_type)
 }
 
 
-void printListCircular(struct lnode *l, char data_type)
+void printListCircular(struct lnode *l, int type, void (*print)(void*))
 {
 	printf("LIST: ");
 
 	struct lnode *head = l;
 	do {
-		switch (data_type) {
-			case 'd':
+		switch (type) {
+			case TYPE_INT:
 				printf("%d -> ", *((int*)l->data));
 				break;
-			case 'f':
+			case TYPE_FLOAT:
+			case TYPE_DOUBLE:
 				printf("%f -> ", *((double*)l->data));
 				break;
-			case 'c':
+			case TYPE_CHAR:
 				printf("%c -> ", *((char*)l->data));
 				break;
-			case 's':
-				printf("%s -> ", *((char*)l->data));
+			case TYPE_STRING:
+				printf("%s -> ", *((char**)l->data));
+				break;
+			case TYPE_CUSTOM:
+				print(l->data);
+				break;
+			default:
+				fprintf(stderr, "error printing list: invalid type\n");
 				break;
 		}
 		l = l->next;
@@ -73,46 +95,60 @@ void printListCircular(struct lnode *l, char data_type)
 	printf("...\n");
 }
 
-void printLaddrCircular(struct lnode *l, char data_type)
+void printLaddrCircular(struct lnode *l, int type, void (*print)(void*))
 {
 	printf("LIST ADDRESSES\n");
 
 	struct lnode *head = l;
 	do {
-		switch (data_type) {
-			case 'd':
+		switch (type) {
+			case TYPE_INT:
 				printf("%p: %d\n", l, *((int*)l->data));
 				break;
-			case 'f':
+			case TYPE_FLOAT:
+			case TYPE_DOUBLE:
 				printf("%p: %f\n", l, *((double*)l->data));
 				break;
-			case 'c':
+			case TYPE_CHAR:
 				printf("%p: %c\n", l, *((char*)l->data));
 				break;
-			case 's':
-				printf("%p: %s\n", l, *((char*)l->data));
+			case TYPE_STRING:
+				printf("%p: %s\n", l, *((char**)l->data));
+				break;
+			case TYPE_CUSTOM:
+				print(l->data);
+				break;
+			default:
+				fprintf(stderr, "error printing list: invalid type\n");
 				break;
 		}
 		l = l->next;
 	} while (l != head);
 }
 
-static void printDListReverse(struct dlnode *dl, char data_type)
+static void printDListReverse(struct dlnode *dl, int type, void (*print)(void*))
 {
 	printf("LIST: ");
 	while (dl != NULL) {
-		switch (data_type) {
-			case 'd':
+		switch (type) {
+			case TYPE_INT:
 				printf("%d -> ", *((int*)dl->data));
 				break;
-			case 'f':
+			case TYPE_FLOAT:
+			case TYPE_DOUBLE:
 				printf("%f -> ", *((double*)dl->data));
 				break;
-			case 'c':
+			case TYPE_CHAR:
 				printf("%c -> ", *((char*)dl->data));
 				break;
-			case 's':
-				printf("%s -> ", *((char*)dl->data));
+			case TYPE_STRING:
+				printf("%s -> ", *((char**)dl->data));
+				break;
+			case TYPE_CUSTOM:
+				print(dl->data);
+				break;
+			default:
+				fprintf(stderr, "error printing list: invalid type\n");
 				break;
 		}
 		dl = dl->prev;
@@ -120,24 +156,31 @@ static void printDListReverse(struct dlnode *dl, char data_type)
 	printf("NULL\n");
 }
 
-static void printDListCircularReverse(struct dlnode *dl, char data_type)
+static void printDListCircularReverse(struct dlnode *dl, int type, void (*print)(void*))
 {
 	printf("LIST: ");
 
 	struct dlnode *tail = dl;
 	do {
-		switch (data_type) {
-			case 'd':
+		switch (type) {
+			case TYPE_INT:
 				printf("%d -> ", *((int*)dl->data));
 				break;
-			case 'f':
+			case TYPE_FLOAT:
+			case TYPE_DOUBLE:
 				printf("%f -> ", *((double*)dl->data));
 				break;
-			case 'c':
+			case TYPE_CHAR:
 				printf("%c -> ", *((char*)dl->data));
 				break;
-			case 's':
-				printf("%s -> ", *((char*)dl->data));
+			case TYPE_STRING:
+				printf("%s -> ", *((char**)dl->data));
+				break;
+			case TYPE_CUSTOM:
+				print(dl->data);
+				break;
+			default:
+				fprintf(stderr, "error printing list: invalid type\n");
 				break;
 		}
 		dl = dl->prev;
@@ -146,30 +189,30 @@ static void printDListCircularReverse(struct dlnode *dl, char data_type)
 	printf("...\n");
 }
 
-void printDList(struct dlnode *dl, char data_type)
+void printDList(struct dlnode *dl, int type, void (*print)(void*))
 {
 	if (dl->next != NULL) {
-		printList((struct lnode*)dl, data_type);
+		printList((struct lnode*)dl, type, print);
 	} else {
-		printDListReverse(dl, data_type);
+		printDListReverse(dl, type, print);
 	}
 }
 
-void printDLaddr(struct dlnode *dl, char data_type)
+void printDLaddr(struct dlnode *dl, int type, void (*print)(void*))
 {
-	printLaddr((struct lnode*)dl, data_type);
+	printLaddr((struct lnode*)dl, type, print);
 }
 
-void printDListCircular(struct dlnode *dl, char data_type)
+void printDListCircular(struct dlnode *dl, int type, void (*print)(void*))
 {	
 	if (dl->next != NULL) {
-		printListCircular((struct lnode*)dl, data_type);
+		printListCircular((struct lnode*)dl, type, print);
 	} else {
-		printDListCircularReverse(dl, data_type);
+		printDListCircularReverse(dl, type, print);
 	}
 }
 
-void printDLaddrCircular(struct dlnode *dl, char data_type)
+void printDLaddrCircular(struct dlnode *dl, int type, void (*print)(void*))
 {
-	printLaddrCircular((struct lnode*)dl, data_type);
+	printLaddrCircular((struct lnode*)dl, type, print);
 }

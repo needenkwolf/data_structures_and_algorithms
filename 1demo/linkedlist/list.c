@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../linkedlist/list.h"
+#include "../../general/general.h"
 
 struct lnode *createIntegerList(int number)
 {
@@ -40,7 +41,7 @@ int main(int argc, char *argv[])
 
 	insertInteger(&head, 3);
 
-	printList(head, 'd');
+	printList(head, TYPE_INT, NULL);
 
 	int listsize = getLsize(head);
 	int valuetofind = 2;
@@ -60,7 +61,7 @@ int main(int argc, char *argv[])
 	} else {
 		printf("No, it is not circular!\n");
 	}
-	printListCircular(head, 'd');
+	printListCircular(head, TYPE_INT, NULL);
 	undoLcycle(head);
 	if (checkLcircular(head)) {
 		printf("Yes, it is circular!\n");
@@ -69,25 +70,25 @@ int main(int argc, char *argv[])
 	}
 
 	struct lnode *middle = getLmiddleNode(head);
-	printList(middle, 'd');
+	printList(middle, TYPE_INT, NULL);
 
 	struct dlnode *dl = lnodeTodlnode(head);
 	struct dlnode *dltail = dl;
 	dltail = insertDLinteger(&dltail, 16);
 	dltail = insertDLinteger(&dltail, 32);
-	printDList(dl, 'd');
-	printDList(dltail, 'd');
+	printDList(dl, TYPE_INT, NULL);
+	printDList(dltail, TYPE_INT, NULL);
 
 	deleteAtDLbegin(&dl);
 
-	printList(head, 'd');
+	printList(head, TYPE_INT, NULL);
 
 	createDLcycle(dl);
-	printDListCircular(dl, 'd');
+	printDListCircular(dl, TYPE_INT, NULL);
 	undoDLcycle(dl);
 
 
-	printList(head, 'd');
+	printList(head, TYPE_INT, NULL);
 
 	int *array = createArrayFromList(head, (getLsize(head) * sizeof(int)), sizeof(int));
 
@@ -101,7 +102,7 @@ int main(int argc, char *argv[])
 
 	struct lnode *lArr = createListFromArray(array2, 3 * sizeof(int), sizeof(int));
 
-	printList(lArr, 'd');
+	printList(lArr, TYPE_INT, NULL);
 
 	freeList(&head);
 	freeList(&lArr);

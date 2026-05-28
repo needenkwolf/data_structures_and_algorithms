@@ -37,8 +37,8 @@ struct lnode *getLnode(struct lnode *head, int index);
 struct lnode *getLmiddleNode(struct lnode *head);
 int searchLnode(struct lnode *head, int data);
 
-void printLaddr(struct lnode *l, char data_type);
-void printList(struct lnode *l, char data_type);
+void printLaddr(struct lnode *l, int type, void (*print)(void*));
+void printList(struct lnode *l, int type, void (*print)(void*));
 
 void freeList(struct lnode **l);
 
@@ -48,16 +48,16 @@ struct lnode *createLcycle(struct lnode *head);
 struct lnode *undoLcycle(struct lnode *head);
 int checkLcircular(struct lnode *l);
 void freeListCircular(struct lnode **l);
-void printListCircular(struct lnode *l, char data_type);
-void printLaddrCircular(struct lnode *l, char data_type);
+void printListCircular(struct lnode *l, int type, void (*print)(void*));
+void printLaddrCircular(struct lnode *l, int type, void (*print)(void*));
 
 struct lnode *dlnodeTolnode(struct dlnode *dl);
 struct dlnode *lnodeTodlnode(struct lnode *sl);
 
-void printDList(struct dlnode *dl, char data_type);
-void printDLaddr(struct dlnode *dl, char data_type);
-void printDListCircular(struct dlnode *dl, char data_type);
-void printDLaddrCircular(struct dlnode *dl, char data_type);
+void printDList(struct dlnode *dl, int type, void (*print)(void*));
+void printDLaddr(struct dlnode *dl, int type, void (*print)(void*));
+void printDListCircular(struct dlnode *dl, int type, void (*print)(void*));
+void printDLaddrCircular(struct dlnode *dl, int type, void (*print)(void*));
 void freeDList(struct dlnode **dl);
 
 struct dlnode *createDLnode(void *data);
