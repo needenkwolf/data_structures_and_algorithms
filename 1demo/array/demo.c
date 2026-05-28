@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "../../array/array.h"
 #include "../../general/general.h"
 
@@ -18,22 +19,35 @@ void printArrayPerson(void *array, int n)
 	printArray(array, n, sizeof(struct person), TYPE_CUSTOM, printItemPerson);
 }
 
+void *lsearchCheckPerson(void *array, void *searching)
+{
+	if (strcmp(((struct person*)array)->name, *(char**)searching) == 0) return array;
+	else return NULL;
+}
+
+int qsortPersonByName(const void *item1, const void *item2)
+{
+	return strcmp(((struct person*)item1)->name, ((struct person*)item2)->name);
+}
+
+
 int main(int argc, char *argv[])
 {
 	int iArr[5] = {2, 73, 6, 32, 81};
+	printArray(iArr, 5, sizeof(int), TYPE_INT, NULL);
 	qsortArray(iArr, 5, sizeof(int), TYPE_INT, NULL);
 	printArray(iArr, 5, sizeof(int), TYPE_INT, NULL);
 
 	int to_search = 6;
 	int *foundp = NULL; 
-	foundp = (int*)lsearchArray(iArr, &to_search, 5, TYPE_INT, NULL);
+	foundp = (int*)bsearchArray(iArr, &to_search, 5, sizeof(int), TYPE_INT, NULL);
 	if (foundp != NULL)
 		printf("value %d in index %ld\n", to_search, foundp - iArr);
 
 	char *sArr[5] = {"say", "hello", "to", "the", "world"};
 
 	char *to_search2 = "the";
-	char **foundp2 = (char**)lsearchArray(sArr, &to_search2, 5, TYPE_STRING, NULL);
+	char **foundp2 = (char**)lsearchArray(sArr, &to_search2, 5, sizeof(int), TYPE_STRING, NULL);
 	if (foundp2 != NULL && (*foundp2) != NULL)
 		printf("value \"%s\" in index %ld\n", to_search2, foundp2 - sArr);
 
@@ -43,6 +57,14 @@ int main(int argc, char *argv[])
 	printArray(sArr2, 5, sizeof(char*), TYPE_STRING, NULL);
 
 	struct person people[3] = {{"Matt", 21}, {"Andrew", 34}, {"John", 18}};
+	printArrayPerson(people, 3);
+
+	char *to_search3 = "Andrew";
+	struct person *found3 = (struct person*)lsearchArray(people, &to_search3, 3, sizeof(struct person), TYPE_CUSTOM, lsearchCheckPerson);
+	printItemPerson(found3);
+	printf("\n");
+
+	qsortArray(people, 3, sizeof(struct person), TYPE_CUSTOM, qsortPersonByName);
 	printArrayPerson(people, 3);
 
 	return 0;

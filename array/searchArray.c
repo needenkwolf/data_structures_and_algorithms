@@ -4,7 +4,7 @@
 #include "array.h"
 #include "../general/general.h"
 
-void *lsearchArray(void *array, void *searching, int n, int type, void *(*search)(void*))
+void *lsearchArray(void *array, void *searching, int n, int sizePerItem, int type, void *(*check)(void*, void*))
 {
 	for (int i = 0; i < n; i++) {
 		switch (type) {
@@ -22,7 +22,8 @@ void *lsearchArray(void *array, void *searching, int n, int type, void *(*search
 				if (strcmp(*((char**)array + i), *(char**)searching) == 0) 	return (char**)array + i;
 				break;
 			case TYPE_CUSTOM:
-				return search(array); /* should be search(array + i * sizePerItem); */
+				void *c = check(array + i * sizePerItem, searching);
+				if (c != NULL) return c;
 				break;
 			default:
 				fprintf(stderr, "error (lsearchArray): unknown type"); 
