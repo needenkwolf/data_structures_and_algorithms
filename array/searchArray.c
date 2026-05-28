@@ -22,7 +22,7 @@ void *lsearchArray(void *array, void *searching, int n, int type, void *(*search
 				if (strcmp(*((char**)array + i), *(char**)searching) == 0) 	return (char**)array + i;
 				break;
 			case TYPE_CUSTOM:
-				return search(array);
+				return search(array); /* should be search(array + i * sizePerItem); */
 				break;
 			default:
 				fprintf(stderr, "error (lsearchArray): unknown type"); 
