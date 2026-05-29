@@ -17,6 +17,7 @@ void deleteAtArrayEnd(void *array, int n, int sizePerItem, int type, void (*dele
 void deleteAtArrayPos(void *array, int pos, int n, int sizePerItem, int type, void (*deletePos)(void*, int, int));
 
 void fillArray(void *array, void *toFill, int n, int sizePerItem, int type, void (*fill)(void*, void*));
+void resizeArray(void *array, int new_size, int n, int sizePerItem, int type, void *(*resize)(void*, int, int));
 int isEmptyArray(void *array, int n, int sizePerItem, int type, void (*isEmpty)(void*));
 
 #endif

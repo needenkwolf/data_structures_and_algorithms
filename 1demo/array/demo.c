@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "../../array/array.h"
 #include "../../general/general.h"
 
@@ -67,7 +68,9 @@ int main(int argc, char *argv[])
 	qsortArray(people, 3, sizeof(struct person), TYPE_CUSTOM, qsortPersonByName);
 	printArrayPerson(people, 3);
 
-	int iArr2[5] = {52, 32, 0, 0, 0};
+	int *iArr2 = malloc(sizeof(int) * 5);
+	iArr[0] = 52;
+	iArr[1] = 32;
 	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
 
 	int number_two = 2;
@@ -93,5 +96,7 @@ int main(int argc, char *argv[])
 	insertAtArrayEnd(iArr2, &number_two, 5, sizeof(int), TYPE_INT, NULL);
 	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
 	printf("is iArr2 empty? %s\n", isEmptyArray(iArr2, 5, sizeof(int), TYPE_INT, NULL) ? "yes" : "no");
+	resizeArray(&iArr2, 20, 5, sizeof(int), TYPE_INT, NULL);
+	printArray(iArr2, 20, sizeof(int), TYPE_INT, NULL);
 	return 0;
 }
