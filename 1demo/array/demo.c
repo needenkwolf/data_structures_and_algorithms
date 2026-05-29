@@ -73,6 +73,7 @@ int main(int argc, char *argv[])
 	int number_two = 2;
 	int number_three = 3;
 	int number_four = 4;
+	int zero = 0;
 
 	insertAtArrayEnd(iArr2, &number_two, 5, sizeof(int), TYPE_INT, NULL);
 	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
@@ -82,11 +83,15 @@ int main(int argc, char *argv[])
 	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
 	deleteAtArrayPos(iArr2, 1, 5, sizeof(int), TYPE_INT, NULL);
 	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
-	deleteAtArrayPos(iArr2, 1, 5, sizeof(int), TYPE_INT, NULL);
-	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
 	deleteAtArrayBegin(iArr2, 5, sizeof(int), TYPE_INT, NULL);
 	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
-	deleteAtArrayEnd(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	fillArray(iArr2, &zero, 5, sizeof(int), TYPE_INT, NULL);
 	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	zero = -1;
+	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	printf("is iArr2 empty? %s\n", isEmptyArray(iArr2, 5, sizeof(int), TYPE_INT, NULL) ? "yes" : "no");
+	insertAtArrayEnd(iArr2, &number_two, 5, sizeof(int), TYPE_INT, NULL);
+	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	printf("is iArr2 empty? %s\n", isEmptyArray(iArr2, 5, sizeof(int), TYPE_INT, NULL) ? "yes" : "no");
 	return 0;
 }
