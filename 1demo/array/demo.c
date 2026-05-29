@@ -80,5 +80,13 @@ int main(int argc, char *argv[])
 	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
 	insertAtArrayPos(iArr2, &number_four, 2, 5, sizeof(int), TYPE_INT, NULL);
 	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	deleteAtArrayPos(iArr2, 1, 5, sizeof(int), TYPE_INT, NULL);
+	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	deleteAtArrayPos(iArr2, 1, 5, sizeof(int), TYPE_INT, NULL);
+	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	deleteAtArrayBegin(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	deleteAtArrayEnd(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
 	return 0;
 }
