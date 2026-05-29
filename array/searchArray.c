@@ -26,7 +26,7 @@ void *lsearchArray(void *array, void *searching, int n, int sizePerItem, int typ
 				if (c != NULL) return c;
 				break;
 			default:
-				fprintf(stderr, "error (lsearchArray): unknown type"); 
+				fprintf(stderr, "error (lsearchArray): invalid type"); 
 				break;
 
 		}
@@ -53,7 +53,7 @@ void *bsearchArray(void *array, void *searching, int n, int sizePerItem, int typ
 			found_item = bsearch(searching, array, n, sizePerItem, compare);
 			break;
 		default:
-			fprintf(stderr, "error (bsearchArray): unknown type"); 
+			fprintf(stderr, "error (bsearchArray): invalid type"); 
 			break;
 	}
 

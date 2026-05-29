@@ -67,5 +67,18 @@ int main(int argc, char *argv[])
 	qsortArray(people, 3, sizeof(struct person), TYPE_CUSTOM, qsortPersonByName);
 	printArrayPerson(people, 3);
 
+	int iArr2[5] = {52, 32, 0, 0, 0};
+	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+
+	int number_two = 2;
+	int number_three = 3;
+	int number_four = 4;
+
+	insertAtArrayEnd(iArr2, &number_two, 5, sizeof(int), TYPE_INT, NULL);
+	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	insertAtArrayBegin(iArr2, &number_three, 5, sizeof(int), TYPE_INT, NULL);
+	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	insertAtArrayPos(iArr2, &number_four, 2, 5, sizeof(int), TYPE_INT, NULL);
+	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
 	return 0;
 }

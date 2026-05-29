@@ -18,7 +18,7 @@ void qsortArray(void *array, int n, int sizePerItem, int type, int (*compare)(co
 			qsort(array, n, sizePerItem, compare);
 			break;
 		default:
-			fprintf(stderr, "error (qsortArray): unknown type"); 
+			fprintf(stderr, "error (qsortArray): invalid type"); 
 			break;
 	}
 }

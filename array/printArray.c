@@ -24,7 +24,7 @@ void printArray(void *array, int n, int sizePerItem, int type, void (*print)(voi
 				print(array + i * sizePerItem);
 				break;
 			default:
-				fprintf(stderr, "error (printArray): unknown type"); 
+				fprintf(stderr, "error (printArray): invalid type"); 
 				break;
 		}
 	}

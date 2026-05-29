@@ -8,4 +8,8 @@ void *bsearchArray(void *array, void *searching, int n, int sizePerItem, int typ
 
 void qsortArray(void *array, int n, int sizePerItem, int type, int (*compare)(const void*, const void*));
 
+void insertAtArrayBegin(void *array, void *toInsert, int n, int sizePerItem, int type, void (*insertBegin)(void*, void*, int));
+void insertAtArrayEnd(void *array, void *toInsert, int n, int sizePerItem, int type, void (*insertEnd)(void*, void*));
+void insertAtArrayPos(void *array, void *toInsert, int pos, int n, int sizePerItem, int type, void (*insertPos)(void*, void*));
+
 #endif
