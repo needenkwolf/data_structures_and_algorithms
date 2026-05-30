@@ -15,15 +15,19 @@ void printItemPerson(void *item)
 		   	    ((struct person*)item)->age);
 }
 
-void printArrayPerson(void *array, int n)
+void printArrayPerson(struct arr *array)
 {
-	printArray(array, n, sizeof(struct person), TYPE_CUSTOM, printItemPerson);
+	array->func = printItemPerson;
+	printArray(array);
+	array->func = NULL;
 }
 
-void *lsearchCheckPerson(void *array, void *searching)
+void *lsearchCheckPerson(struct arr *array, void *searching, int i)
 {
-	if (strcmp(((struct person*)array)->name, *(char**)searching) == 0) return array;
-	else return NULL;
+	if (strcmp((((struct person*)(array->data)) + i)->name, *(char**)searching) == 0) 
+		return (struct person*)array->data + i;
+	else 
+		return NULL;
 }
 
 int qsortPersonByName(const void *item1, const void *item2)
@@ -34,69 +38,78 @@ int qsortPersonByName(const void *item1, const void *item2)
 
 int main(int argc, char *argv[])
 {
-	int iArr[5] = {2, 73, 6, 32, 81};
-	printArray(iArr, 5, sizeof(int), TYPE_INT, NULL);
-	qsortArray(iArr, 5, sizeof(int), TYPE_INT, NULL);
-	printArray(iArr, 5, sizeof(int), TYPE_INT, NULL);
+	int _iArr[5] = {2, 73, 6, 32, 81};
+	struct arr *iArr = createArray(_iArr, 5, sizeof(int), TYPE_INT);
+	printArray(iArr);
+	qsortArray(iArr);
+	printArray(iArr);
 
 	int to_search = 6;
 	int *foundp = NULL; 
-	foundp = (int*)bsearchArray(iArr, &to_search, 5, sizeof(int), TYPE_INT, NULL);
+	foundp = (int*)bsearchArray(iArr, &to_search);
 	if (foundp != NULL)
-		printf("value %d in index %ld\n", to_search, foundp - iArr);
+		printf("value %d in index %ld\n", to_search, foundp - (int*)(iArr->data));
 
-	char *sArr[5] = {"say", "hello", "to", "the", "world"};
+	char *_sArr[5] = {"say", "hello", "to", "the", "world"};
+	struct arr *sArr = createArray(_sArr, 5, sizeof(char*), TYPE_STRING);
 
 	char *to_search2 = "the";
-	char **foundp2 = (char**)lsearchArray(sArr, &to_search2, 5, sizeof(int), TYPE_STRING, NULL);
+	char **foundp2 = (char**)lsearchArray(sArr, &to_search2);
 	if (foundp2 != NULL && (*foundp2) != NULL)
-		printf("value \"%s\" in index %ld\n", to_search2, foundp2 - sArr);
+		printf("value \"%s\" in index %ld\n", to_search2, foundp2 - (char**)(sArr->data));
 
-	char *sArr2[5] = {"oranges", "apples", "bananas", "melons", "coconuts"};
-	printArray(sArr2, 5, sizeof(char*), TYPE_STRING, NULL);
-	qsortArray(sArr2, 5, sizeof(char*), TYPE_STRING, NULL);
-	printArray(sArr2, 5, sizeof(char*), TYPE_STRING, NULL);
+	char *_sArr2[5] = {"oranges", "apples", "bananas", "melons", "coconuts"};
+	struct arr *sArr2 = createArray(_sArr2, 5, sizeof(char*), TYPE_STRING);
+	printArray(sArr2);
+	qsortArray(sArr2);
+	printArray(sArr2);
 
 	struct person people[3] = {{"Matt", 21}, {"Andrew", 34}, {"John", 18}};
-	printArrayPerson(people, 3);
+	struct arr *pArr = createArray(people, 3, sizeof(struct person), TYPE_CUSTOM);
+	printArrayPerson(pArr);
 
 	char *to_search3 = "Andrew";
-	struct person *found3 = (struct person*)lsearchArray(people, &to_search3, 3, sizeof(struct person), TYPE_CUSTOM, lsearchCheckPerson);
+	pArr->func = lsearchCheckPerson;
+	struct person *found3 = (struct person*)lsearchArray(pArr, &to_search3);
 	printItemPerson(found3);
 	printf("\n");
 
-	qsortArray(people, 3, sizeof(struct person), TYPE_CUSTOM, qsortPersonByName);
-	printArrayPerson(people, 3);
+	pArr->func = qsortPersonByName;
+	qsortArray(pArr);
 
-	int *iArr2 = malloc(sizeof(int) * 5);
-	iArr[0] = 52;
-	iArr[1] = 32;
-	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	printArrayPerson(pArr);
+
+	int *_iArr2 = malloc(sizeof(int) * 5);
+	struct arr *iArr2 = createArray(_iArr2, 5, sizeof(int), TYPE_INT);
+	_iArr2[0] = 52;
+	_iArr2[1] = 32;
+	printArray(iArr2);
 
 	int number_two = 2;
 	int number_three = 3;
 	int number_four = 4;
 	int zero = 0;
 
-	insertAtArrayEnd(iArr2, &number_two, 5, sizeof(int), TYPE_INT, NULL);
-	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
-	insertAtArrayBegin(iArr2, &number_three, 5, sizeof(int), TYPE_INT, NULL);
-	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
-	insertAtArrayPos(iArr2, &number_four, 2, 5, sizeof(int), TYPE_INT, NULL);
-	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
-	deleteAtArrayPos(iArr2, 1, 5, sizeof(int), TYPE_INT, NULL);
-	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
-	deleteAtArrayBegin(iArr2, 5, sizeof(int), TYPE_INT, NULL);
-	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
-	fillArray(iArr2, &zero, 5, sizeof(int), TYPE_INT, NULL);
-	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
+	insertAtArrayEnd(iArr2, &number_two);
+	printArray(iArr2);
+	insertAtArrayBegin(iArr2, &number_two);
+	printArray(iArr2);
+	insertAtArrayPos(iArr2, &number_four, 2);
+	printArray(iArr2);
+	deleteAtArrayPos(iArr2, 1);
+	printArray(iArr2);
+	deleteAtArrayBegin(iArr2);
+	printArray(iArr2);
+	fillArray(iArr2, &zero);
+	printArray(iArr2);
 	zero = -1;
-	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
-	printf("is iArr2 empty? %s\n", isEmptyArray(iArr2, 5, sizeof(int), TYPE_INT, NULL) ? "yes" : "no");
-	insertAtArrayEnd(iArr2, &number_two, 5, sizeof(int), TYPE_INT, NULL);
-	printArray(iArr2, 5, sizeof(int), TYPE_INT, NULL);
-	printf("is iArr2 empty? %s\n", isEmptyArray(iArr2, 5, sizeof(int), TYPE_INT, NULL) ? "yes" : "no");
-	resizeArray(&iArr2, 20, 5, sizeof(int), TYPE_INT, NULL);
-	printArray(iArr2, 20, sizeof(int), TYPE_INT, NULL);
+	printArray(iArr2);
+	printf("is iArr2 empty? %s\n", isEmptyArray(iArr2) ? "yes" : "no");
+	insertAtArrayEnd(iArr2, &number_two);
+	printArray(iArr2);
+	printf("is iArr2 empty? %s\n", isEmptyArray(iArr2) ? "yes" : "no");
+	resizeArray(iArr2, 20);
+	printArray(iArr2);
+
 	return 0;
 }

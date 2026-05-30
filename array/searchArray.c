@@ -4,29 +4,38 @@
 #include "array.h"
 #include "../general/general.h"
 
-void *lsearchArray(void *array, void *searching, int n, int sizePerItem, int type, void *(*check)(void*, void*))
+void *lsearchArray(struct arr *array, void *searching)
 {
+	void *(*check)(struct arr*, void*, int) = array->func;
+	int n = array->size;
+	int sizePerItem = array->sizePerItem;
+	int type = array->type;
+
 	for (int i = 0; i < n; i++) {
 		switch (type) {
 			case TYPE_INT:
-				if (*((int*)array + i) == *(int*)searching)	 		return (int*)array + i;
+				if (*((int*)(array->data) + i) == *(int*)searching)	 		return (int*)(array->data) + i;
 				break;
 			case TYPE_FLOAT:
 			case TYPE_DOUBLE:
-				if (*((double*)array + i) == *(double*)searching) 		return (double*)array + i;
+				if (*((double*)(array->data) + i) == *(double*)searching) 		return (double*)(array->data) + i;
 				break;
 			case TYPE_CHAR:
-				if (*((char*)array + i) == *(char*)searching) 			return (char*)array + i;
+				if (*((char*)(array->data) + i) == *(char*)searching) 			return (char*)(array->data) + i;
 				break;
 			case TYPE_STRING:
-				if (strcmp(*((char**)array + i), *(char**)searching) == 0) 	return (char**)array + i;
+				if (strcmp(*((char**)(array->data) + i), *(char**)searching) == 0) 	return (char**)(array->data) + i;
 				break;
 			case TYPE_CUSTOM:
-				void *c = check(array + i * sizePerItem, searching);
+				if (array->func == NULL) {
+					fprintf(stderr, "error: invalid function\n");
+					exit(1);
+				}
+				void *c = check(array, searching, i);
 				if (c != NULL) return c;
 				break;
 			default:
-				fprintf(stderr, "error (lsearchArray): invalid type"); 
+				fprintf(stderr, "error (lsearchArray): invalid type\n"); 
 				break;
 
 		}
@@ -35,25 +44,34 @@ void *lsearchArray(void *array, void *searching, int n, int sizePerItem, int typ
 	return NULL;
 }
 
-void *bsearchArray(void *array, void *searching, int n, int sizePerItem, int type, int (*compare)(const void *, const void *))
+void *bsearchArray(struct arr *array, void *searching)
 {
+	int (*compare)(const void *, const void *) = array->func;
+	int n = array->size;
+	int sizePerItem = array->sizePerItem;
+	int type = array->type;
+
 	void *found_item = NULL;
 
 	switch (type) {
 		case TYPE_INT:
 		case TYPE_FLOAT:
 		case TYPE_DOUBLE:
-			found_item = bsearch(searching, array, n, sizePerItem, compareNumeric);
+			found_item = bsearch(searching, (array->data), n, sizePerItem, compareNumeric);
 			break;
 		case TYPE_CHAR:
 		case TYPE_STRING:
-			found_item = bsearch(searching, array, n, sizePerItem, compareString);
+			found_item = bsearch(searching, (array->data), n, sizePerItem, compareString);
 			break;
 		case TYPE_CUSTOM:
-			found_item = bsearch(searching, array, n, sizePerItem, compare);
+			if (array->func == NULL) {
+				fprintf(stderr, "error: invalid function\n");
+				exit(1);
+			}
+			found_item = bsearch(searching, (array->data), n, sizePerItem, compare);
 			break;
 		default:
-			fprintf(stderr, "error (bsearchArray): invalid type"); 
+			fprintf(stderr, "error (bsearchArray): invalid type\n"); 
 			break;
 	}
 

@@ -1,23 +1,33 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
-void printArray(void *array, int n, int sizePerItem, int type, void (*print)(void*));
+struct arr {
+	void *data;
+	void *func;
+	int size;
+	int sizePerItem;
+	int type;
+};
 
-void *lsearchArray(void *array, void *searching, int n, int sizePerItem, int type, void *(*check)(void*, void*));
-void *bsearchArray(void *array, void *searching, int n, int sizePerItem, int type, int (*compare)(const void *, const void *));
+void printArray(struct arr *array);
 
-void qsortArray(void *array, int n, int sizePerItem, int type, int (*compare)(const void*, const void*));
+void *lsearchArray(struct arr *array, void *searching);
+void *bsearchArray(struct arr *array, void *searching);
 
-void insertAtArrayBegin(void *array, void *toInsert, int n, int sizePerItem, int type, void (*insertBegin)(void*, void*, int));
-void insertAtArrayEnd(void *array, void *toInsert, int n, int sizePerItem, int type, void (*insertEnd)(void*, void*));
-void insertAtArrayPos(void *array, void *toInsert, int pos, int n, int sizePerItem, int type, void (*insertPos)(void*, void*));
+void qsortArray(struct arr *array);
 
-void deleteAtArrayBegin(void *array, int n, int sizePerItem, int type, void (*deleteBegin)(void*, int, int));
-void deleteAtArrayEnd(void *array, int n, int sizePerItem, int type, void (*deleteEnd)(void*, int, int));
-void deleteAtArrayPos(void *array, int pos, int n, int sizePerItem, int type, void (*deletePos)(void*, int, int));
+void insertAtArrayBegin(struct arr *array, void *toInsert);
+void insertAtArrayEnd(struct arr *array, void *toInsert);
+void insertAtArrayPos(struct arr *array, void *toInsert, int pos);
 
-void fillArray(void *array, void *toFill, int n, int sizePerItem, int type, void (*fill)(void*, void*));
-void resizeArray(void *array, int new_size, int n, int sizePerItem, int type, void *(*resize)(void*, int, int));
-int isEmptyArray(void *array, int n, int sizePerItem, int type, void (*isEmpty)(void*));
+void deleteAtArrayBegin(struct arr *array);
+void deleteAtArrayEnd(struct arr *array);
+void deleteAtArrayPos(struct arr *array, int pos);
+
+void fillArray(struct arr *array, void *toFill);
+void resizeArray(struct arr *array, int new_size);
+int isEmptyArray(struct arr *array);
+
+struct arr *createArray(void *data, int size, int sizePerItem, int type);
 
 #endif

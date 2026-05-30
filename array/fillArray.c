@@ -4,36 +4,50 @@
 #include "array.h"
 #include "../general/general.h"
 
-void fillArray(void *array, void *toFill, int n, int sizePerItem, int type, void (*fill)(void*, void*))
+void fillArray(struct arr *array, void *toFill)
 {
+	void (*fill)(struct arr*, void*, int) = array->func;
+	int n = array->size;
+	int sizePerItem = array->sizePerItem;
+	int type = array->type;
+
 	for (int i = 0; i < n; i++) {
 		switch (type) {
 			case TYPE_INT:
-				((int*)array)[i] = *(int*)toFill;
+				((int*)(array->data))[i] = *(int*)toFill;
 				break;
 			case TYPE_FLOAT:
 			case TYPE_DOUBLE:
-				((double*)array)[i] = *(double*)toFill;
+				((double*)(array->data))[i] = *(double*)toFill;
 				break;
 			case TYPE_CHAR:
-				((char*)array)[i] = *(char*)toFill;
+				((char*)(array->data))[i] = *(char*)toFill;
 				break;
 			case TYPE_STRING:
-				strcpy(((char**)array)[i], ((char**)toFill)[0]);
+				strcpy(((char**)(array->data))[i], ((char**)toFill)[0]);
 				break;
 			case TYPE_CUSTOM:
-				fill(array + i, toFill);
+				if (array->func == NULL) {
+					fprintf(stderr, "error: invalid function\n");
+					exit(1);
+				}
+				fill(array, toFill, i);
 				break;
 			default:
-				fprintf(stderr, "error: invalid type");
+				fprintf(stderr, "error: invalid type\n");
 				break;
 		}
 	}
 }
 
-void resizeArray(void *array, int new_size, int n, int sizePerItem, int type, void *(*resize)(void*, int, int))
+void resizeArray(struct arr *array, int new_size)
 {		
-	// void *array must be on the heap
+	// void *(array->data) must be on the heap
+
+	void *(*resize)(struct arr*, int) = array->func;
+	int n = array->size;
+	int sizePerItem = array->sizePerItem;
+	int type = array->type;
 
 	void *new_array = NULL;
 	switch (type) {
@@ -41,82 +55,93 @@ void resizeArray(void *array, int new_size, int n, int sizePerItem, int type, vo
 			new_array = malloc(sizeof(int) * new_size);
 			for (int i = 0; i < new_size; i++) {
 				if (i < n) {
-					((int*)new_array)[i] = (*((int**)array))[i];
+					((int*)new_array)[i] = ((int*)(array->data))[i];
 				} else {
 					((int*)new_array)[i] = 0;
 				}
 			}
-			free(*(int**)array);
-			*(int**)array = (int*)new_array;
 			break;
 		case TYPE_FLOAT:
 		case TYPE_DOUBLE:
 			new_array = malloc(sizeof(double) * new_size);
 			for (int i = 0; i < new_size; i++) {
 				if (i < n) {
-					((double*)new_array)[i] = (*(double**)array)[i];
+					((double*)new_array)[i] = ((double*)(array->data))[i];
 				} else {
 					((double*)new_array)[i] = 0;
 				}
 			}
-			free(*(double**)array);
-			*(double**)array = (double*)new_array;
 			break;
 		case TYPE_CHAR:
 			new_array = malloc(sizeof(char) * new_size);
 			for (int i = 0; i < new_size; i++) {
 				if (i < n) {
-					((char*)new_array)[i] = (*(char**)array)[i];
+					((char*)new_array)[i] = ((char*)(array->data))[i];
 				} else {
 					((char*)new_array)[i] = 0;
 				}
 			}
-			free(*(char**)array);
-			*(char**)array = (char*)new_array;
 			break;
 		case TYPE_STRING:
 			new_array = malloc(sizeof(char*) * new_size);
 			for (int i = 0; i < new_size; i++) {
 				if (i < n) {
-					strcpy(((char**)new_array)[i], (*((char***)array))[i]);
+					strcpy(((char**)new_array)[i], ((char**)(array->data))[i]);
 				} else {
 					strcpy(((char**)new_array)[i], "");
 				}
 			}
-			free(*(char***)array);
-			*(char***)array = (char**)new_array;
 			break;
 		case TYPE_CUSTOM:
-			resize(array, n, new_size);
+			if (array->func == NULL) {
+				fprintf(stderr, "error: invalid function\n");
+				exit(1);
+			}
+			resize(array, new_size);
 			break;
 		default:
-			fprintf(stderr, "error: invalid type");
+			fprintf(stderr, "error: invalid type\n");
 			break;
 	}
+
+	if (array == NULL) return;
+
+	free(array->data);
+	array->data = new_array;
+	array->size = new_size;
 }
 
-int isEmptyArray(void *array, int n, int sizePerItem, int type, void (*isEmpty)(void*))
+int isEmptyArray(struct arr *array)
 {
+	int (*isEmpty)(struct arr*, int) = array->func;
+	int n = array->size;
+	int sizePerItem = array->sizePerItem;
+	int type = array->type;
+
 	for (int i = 0; i < n; i++) {
 		switch (type) {
 			case TYPE_INT:
-				if (((int*)array)[i] != 0) return 0;
+				if (((int*)(array->data))[i] != 0) return 0;
 				break;
 			case TYPE_FLOAT:
 			case TYPE_DOUBLE:
-				if (((double*)array)[i] != 0) return 0;
+				if (((double*)(array->data))[i] != 0) return 0;
 				break;
 			case TYPE_CHAR:
-				if (((char*)array)[i] != 0) return 0;
+				if (((char*)(array->data))[i] != 0) return 0;
 				break;
 			case TYPE_STRING:
-				if (strcmp(((char**)array)[i], "") == 0) return 0;
+				if (strcmp(((char**)(array->data))[i], "") == 0) return 0;
 				break;
 			case TYPE_CUSTOM:
-				isEmpty(array + i);
+				if (array->func == NULL) {
+					fprintf(stderr, "error: invalid function\n");
+					exit(1);
+				}
+				if (isEmpty(array, i) == 0) return 0;
 				break;
 			default:
-				fprintf(stderr, "error: invalid type");
+				fprintf(stderr, "error: invalid type\n");
 				break;
 		}
 	}

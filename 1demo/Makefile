@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g -Wno-unused-variable
 
 all: linkedlist/list.out linkedlist/polynomials/main.out array/demo.out
 
