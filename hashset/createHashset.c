@@ -13,3 +13,21 @@ struct hashset *createHashSet(int size)
 	setHashMod(set->array->size);
 	return set;
 }
+
+void deleteHashSet(struct hashset **set)
+{
+	int size = (*set)->array->size;
+
+
+	if ((*set)->array->data != NULL) {   
+		for (int i = size - 1; i >= 0; i--) {
+			free(((char**)((*set)->array->data))[i]);
+		}
+		free(((char*)((*set)->array->data)));
+	}
+
+	free((*set)->array);
+	free(*set);
+
+	*set = NULL;
+}

@@ -1,6 +1,10 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
+#define PRINT_NO_FILLERS	1
+#define PRINT_INDEX		2
+#define PRINT_ARRAY_LABEL	4
+
 struct arr {
 	void *data;
 	void *func;
@@ -8,6 +12,8 @@ struct arr {
 	int sizePerItem;
 	int type;
 };
+
+extern int arr_opts;
 
 void printArray(struct arr *array);
 
