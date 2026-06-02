@@ -11,6 +11,11 @@ enum {
 	TYPE_CUSTOM
 };
 
+extern int hash_mod;
+
+void setHashMod(int n);
+int hash(char *tohash);
+
 int compareNumeric(const void *a, const void *b);
 int compareString(const void *a, const void *b);
 
