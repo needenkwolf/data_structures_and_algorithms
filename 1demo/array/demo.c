@@ -9,10 +9,10 @@ struct person {
 	int age;
 };
 
-void printItemPerson(void *item)
+void printItemPerson(void *item, int i)
 {
-	printf("(%s, %d) ", ((struct person*)item)->name, 
-		   	    ((struct person*)item)->age);
+	printf("(%s, %d) ", (((struct person**)item)[i])->name, 
+		   	    (((struct person**)item)[i])->age);
 }
 
 void printArrayPerson(struct arr *array)
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 	char *to_search3 = "Andrew";
 	pArr->func = lsearchCheckPerson;
 	struct person *found3 = (struct person*)lsearchArray(pArr, &to_search3);
-	printItemPerson(found3);
+	printItemPerson(found3, 0);
 	printf("\n");
 
 	pArr->func = qsortPersonByName;

@@ -8,7 +8,7 @@ int arr_opts = PRINT_ARRAY_LABEL;
 
 void printArray(struct arr *array)
 { 
-	void (*print)(void*) = array->func;
+	void (*print)(void*, int) = array->func;
 	int n = array->size;
 	int sizePerItem = array->sizePerItem;
 	int type = array->type;
@@ -67,7 +67,7 @@ void printArray(struct arr *array)
 					fprintf(stderr, "error: invalid function\n");
 					exit(1);
 				}
-				print((array->data) + i * sizePerItem);
+				print(array->data, i);
 				break;
 			default:
 				fprintf(stderr, "error (printArray): invalid type\n");
