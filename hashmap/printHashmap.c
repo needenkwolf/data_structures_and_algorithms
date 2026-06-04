@@ -30,8 +30,15 @@ void printHashItem(void *item, int count)
 			case TYPE_INT:
 				printf("%d", *(int*)i->value);
 				break;
+			case TYPE_FLOAT:
+			case TYPE_DOUBLE:
+				printf("%f", *(double*)i->value);
+				break;
 			case TYPE_STRING:
 				printf("%s", *(char**)i->value);
+				break;
+			case TYPE_CUSTOM:
+				printf("%p", i->value);
 				break;
 		}
 		printf(") ");
