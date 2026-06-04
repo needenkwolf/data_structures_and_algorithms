@@ -10,42 +10,17 @@ struct product {
 	double price;
 };
 
-int addHmapProduct(struct hashmap *map, char *key, void *value)
+int addHmapProduct(struct hashmap *map, char *key, void *value, int hashcode)
 {
-	int asize = map->array->size;
-
-	setHashMod(asize);
-
-	int hashcode = hash(key);
-	int start = hashcode;
-
 	struct hmapitem *item = ((struct hmapitem**)(map->array->data))[hashcode];
 
-	int can_add = 0;
-	do {
-		item = ((struct hmapitem**)(map->array->data))[hashcode];
-		int itype = TYPE_CUSTOM;
-
-		if (item->key != NULL && strcmp(item->key, key) == 0) return 0;
-
-		if ((item->key == NULL)
-		|| (item->value == NULL)) {
-			can_add = 1;
-			if (item->value != NULL) free(item->value);
-			item->value = malloc(sizeof(struct product));
-			item->size = sizeof(struct product);
-		}
-
-		if (can_add) {
-			item->key = key;
-			item->type = itype;
-			memcpy(item->value, value, item->size);
-			return 1;
-		} 		
-		else { 
-			hashcode = (hashcode + 1) % asize;
-		}
-	} while (hashcode != start);
+	if ((item->key == NULL)
+	|| (item->value == NULL)) {
+		if (item->value != NULL) free(item->value);
+		item->value = malloc(sizeof(struct product));
+		item->size = sizeof(struct product);
+		return 1;
+	}
 
 	return 0;
 }

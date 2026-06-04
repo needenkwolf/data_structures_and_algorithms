@@ -16,11 +16,6 @@ int addHmapItem(struct hashmap *map, char *key, void *value, int itype)
 
 	struct hmapitem *item = ((struct hmapitem**)(map->array->data))[hashcode];
 
-	if (itype == TYPE_CUSTOM) {
-		int (*f)(struct hashmap*, char*, void*) = map->array->func;
-		return f(map, key, value);
-	}
-
 	int can_add = 0;
 	do {
 		item = ((struct hmapitem**)(map->array->data))[hashcode];
@@ -54,6 +49,10 @@ int addHmapItem(struct hashmap *map, char *key, void *value, int itype)
 					item->value = malloc(sizeof(char) * length);
 					item->size = sizeof(char) * length;
 				}
+				break;
+			case TYPE_CUSTOM:
+				int (*f)(struct hashmap*, char*, void*, int) = map->array->func;
+				can_add = f(map, key, value, hashcode);
 				break;
 			default:
 				fprintf(stderr, "error: invalid type\n");
