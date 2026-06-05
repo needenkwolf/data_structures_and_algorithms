@@ -2,8 +2,8 @@
 #define QUEUE_H
 
 struct queue {
-	struct dlnode *head;
-	struct dlnode *tail;
+	struct lnode *head;
+	struct lnode *tail;
 };
 
 struct queue *createQueue();
@@ -12,5 +12,6 @@ void *dequeue(struct queue *qu);
 void *peekQueue(struct queue *qu);
 int getSizeQueue(struct queue *qu);
 void printQueue(struct queue *qu);
+void deleteQueue(struct queue **qu);
 
 #endif

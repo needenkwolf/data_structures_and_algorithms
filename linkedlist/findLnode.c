@@ -3,6 +3,8 @@
 
 int getLsize(struct lnode *head) 
 {
+	if (head == NULL) return 0;
+
 	int i;
 	for (i = 1; head->next != NULL; i++) {
 		head = head->next;

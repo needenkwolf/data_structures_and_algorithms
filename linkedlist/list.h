@@ -1,6 +1,8 @@
 #ifndef LIST_H
 #define LIST_H
 
+#define PRINT_NO_LIST 1
+
 struct lnode {
 	void *data;
 	struct lnode *next;
@@ -21,6 +23,8 @@ struct dllist {
 	struct dlnode *head;
 	struct dlnode *tail;
 };
+
+extern int list_opts;
 
 struct lnode *createLnode(void *data);
 

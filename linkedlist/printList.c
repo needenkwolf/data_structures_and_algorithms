@@ -2,9 +2,11 @@
 #include "list.h"
 #include "../general/general.h"
 
+int list_opts = 0;
+
 void printList(struct lnode *l, int type, void (*print)(void*))
 {
-	printf("LIST: ");
+	if (list_opts & ~PRINT_NO_LIST) printf("LIST: ");
 	while (l != NULL) {
 		switch (type) {
 			case TYPE_INT:
