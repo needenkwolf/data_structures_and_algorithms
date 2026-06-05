@@ -10,9 +10,8 @@ struct btnode {
 struct btnode *createBtree();
 struct btnode *insertNodeBtree(struct btnode *bt, void *data);
 struct btnode *searchNodeBtree(struct btnode *bt, void *data);
-int deleteNodeBtree(struct btnode *bt, void *data);
-int deleteBtree(struct btnode *bt);
-void dfsBtree(struct btnode *bt);
-void bfsBtree(struct btnode *bt);
+struct btnode *deleteNodeBtree(struct btnode *bt, void *data);
+void deleteBtree(struct btnode **bt);
+void printBtree(struct btnode *bt);
 
 #endif
