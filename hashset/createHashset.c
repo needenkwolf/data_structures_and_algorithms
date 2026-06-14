@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "hashset.h"
-#include "../array/array.h"
-#include "../general/general.h"
+#include "array.h"
+#include "general.h"
 
 struct hashset *createHashSet(int size)
 {

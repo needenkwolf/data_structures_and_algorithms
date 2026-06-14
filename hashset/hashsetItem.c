@@ -2,8 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "hashset.h"
-#include "../array/array.h"
-#include "../general/general.h"
+#include "array.h"
+#include "general.h"
 
 #define STRING_SIZE 80
 

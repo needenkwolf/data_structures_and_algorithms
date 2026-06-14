@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../../array/array.h"
-#include "../../hashmap/hashmap.h"
-#include "../../general/general.h"
+#include "array.h"
+#include "hashmap.h"
+#include "general.h"
 
 struct product {
 	char *name;

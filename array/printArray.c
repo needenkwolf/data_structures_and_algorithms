@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "array.h"
-#include "../general/general.h"
+#include "general.h"
 
 int arr_opts = PRINT_ARRAY_LABEL;
 
@@ -19,7 +19,7 @@ void printArray(struct arr *array)
 		switch (type) {
 			case TYPE_INT:
 				if (arr_opts & PRINT_NO_FILLERS
-				&& *(((int*)(array->data)) + i) == 0) {
+				&& *(((int*)(array->data)) + i) != 0) {
 					printf("%d", *((int*)(array->data) + i));
 					printed = 1;
 				}
@@ -31,7 +31,7 @@ void printArray(struct arr *array)
 			case TYPE_FLOAT:
 			case TYPE_DOUBLE:
 				if (arr_opts & PRINT_NO_FILLERS
-				&& *(((double*)(array->data)) + i) == 0) {
+				&& *(((double*)(array->data)) + i) != 0) {
 					printf("%f", *((double*)(array->data) + i));
 					printed = 1;
 				}
@@ -42,7 +42,7 @@ void printArray(struct arr *array)
 				break;
 			case TYPE_CHAR:
 				if (arr_opts & PRINT_NO_FILLERS
-				&& *(((char*)(array->data)) + i) == 0) {
+				&& *(((char*)(array->data)) + i) != 0) {
 					printf("%c", *((char*)(array->data) + i));
 					printed = 1;
 				}

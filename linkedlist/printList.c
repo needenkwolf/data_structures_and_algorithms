@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "list.h"
-#include "../general/general.h"
+#include "general.h"
 
 int list_opts = 0;
 

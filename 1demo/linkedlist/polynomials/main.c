@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../../linkedlist/list.h"
+#include "list.h"
 #include "polynomials.h"
 
 int main(int argc, char *argv[]) 

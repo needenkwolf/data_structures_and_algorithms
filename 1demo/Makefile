@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -g -Wno-unused-variable
+CFLAGS = -Wall -g -Wno-unused-variable -I../include
 
 all: linkedlist/list.out linkedlist/polynomials/main.out array/demo.out \
 	hashset/demo.out hashmap/demo.out stack/demo.out queue/demo.out \

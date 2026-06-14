@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../linkedlist/list.h"
-#include "../../general/general.h"
+#include "list.h"
+#include "general.h"
 
 struct lnode *createIntegerList(int number)
 {

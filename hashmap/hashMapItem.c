@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "hashmap.h"
-#include "../array/array.h"
-#include "../general/general.h"
+#include "array.h"
+#include "general.h"
 
 int addHmapItem(struct hashmap *map, char *key, void *value, int itype)
 {

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../general/general.h"
-#include "../linkedlist/list.h"
+#include "general.h"
+#include "list.h"
 #include "stack.h"
 
 struct stack *createStack()

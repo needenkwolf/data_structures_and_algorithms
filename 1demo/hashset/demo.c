@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "../../hashset/hashset.h"
-#include "../../general/general.h"
+#include "hashset.h"
+#include "general.h"
 
 int main()
 {

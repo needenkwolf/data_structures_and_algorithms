@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../linkedlist/list.h"
-#include "../general/general.h"
+#include "general.h"
+#include "list.h"
 #include "stack.h"
 
 int pushStack(struct stack *st, void *item)

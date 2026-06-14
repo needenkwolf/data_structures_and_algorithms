@@ -13,3 +13,9 @@ struct arr *createArray(void *data, int size, int sizePerItem, int type)
 
 	return array;
 }
+
+void freeArray(struct arr **array)
+{
+	free(*array);
+	*array = NULL;
+}

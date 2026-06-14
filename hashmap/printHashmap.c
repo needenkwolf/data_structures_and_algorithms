@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "hashmap.h"
-#include "../array/array.h"
-#include "../general/general.h"
+#include "array.h"
+#include "general.h"
 
 void printHashItem(void *item, int count)
 {

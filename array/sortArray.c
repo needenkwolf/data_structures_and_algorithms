@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "array.h"
-#include "../general/general.h"
+#include "general.h"
 
 void qsortArray(struct arr *array)
 { 

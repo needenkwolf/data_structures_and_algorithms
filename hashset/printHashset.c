@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "hashset.h"
-#include "../array/array.h"
-#include "../general/general.h"
+#include "array.h"
+#include "general.h"
 
 void printHashSet(struct hashset *set)
 {

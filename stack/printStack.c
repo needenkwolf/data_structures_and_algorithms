@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "stack.h"
-#include "../linkedlist/list.h"
-#include "../general/general.h"
+#include "general.h"
+#include "list.h"
 
 void printStack(struct stack *st)
 {

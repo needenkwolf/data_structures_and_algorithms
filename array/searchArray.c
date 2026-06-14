@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "array.h"
-#include "../general/general.h"
+#include "general.h"
 
 void *lsearchArray(struct arr *array, void *searching)
 {

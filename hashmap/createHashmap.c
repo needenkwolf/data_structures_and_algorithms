@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "hashmap.h"
-#include "../array/array.h"
-#include "../general/general.h"
+#include "array.h"
+#include "general.h"
 
 struct hashmap *createHashMap(int size)
 {
