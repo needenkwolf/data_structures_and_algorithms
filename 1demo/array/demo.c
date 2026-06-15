@@ -42,6 +42,12 @@ int main(int argc, char *argv[])
 	struct arr *iArr = createArray(_iArr, 5, sizeof(int), TYPE_INT);
 	printArray(iArr);
 
+	setItemArray(iArr, 3, &(int){256});
+
+	printArray(iArr);
+
+	printf("iArr n2: %d\n", getItemArrayInt(iArr, 2));
+
 	freeArray(&iArr);
 
 	return 0;

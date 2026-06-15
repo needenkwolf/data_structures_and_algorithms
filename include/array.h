@@ -5,6 +5,9 @@
 #define PRINT_INDEX		2
 #define PRINT_ARRAY_LABEL	4
 
+#define GET_ITEM_ARRAY(array, n, type) \
+	((type*)array->data)[n]
+
 struct arr {
 	void *data;
 	void *func;
@@ -36,5 +39,12 @@ int isEmptyArray(struct arr *array);
 
 struct arr *createArray(void *data, int size, int sizePerItem, int type);
 void freeArray(struct arr **array);
+
+int getItemArrayInt(struct arr *array, int n);
+double getItemArrayDouble(struct arr *array, int n);
+char getItemArrayChar(struct arr *array, int n);
+char *getItemArrayString(struct arr *array, int n);
+
+void setItemArray(struct arr *array, int n, void *value);
 
 #endif
