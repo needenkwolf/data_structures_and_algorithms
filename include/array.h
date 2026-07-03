@@ -39,6 +39,7 @@ int isEmptyArray(struct arr *array);
 
 struct arr *createArray(void *data, int size, int sizePerItem, int type);
 void freeArray(struct arr **array);
+void freeArrayData(struct arr **array);
 
 int getItemArrayInt(struct arr *array, int n);
 double getItemArrayDouble(struct arr *array, int n);
